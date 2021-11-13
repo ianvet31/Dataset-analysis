@@ -1,17 +1,19 @@
 ## [Dataset](https://snap.stanford.edu/data/twitch_gamers.html)
 
-- **Leading Question**: We have a few questions regarding our data for Twitch Streamers. Our primary question is to find whether there’s a clear relationship between overall time spent on twitch and followers. Specifically, we want to see if spending more time on twitch equates to a larger following. Another question we could consider is finding the user with the most mutual connections between two users. This could help us predict how mutual interactions/followings between multiple users can predict future followings. Additionally, we could find the average minimum user connection between any two users.
+**Leading Question**: Our primary question is to find whether there’s a clear relationship between overall time spent on twitch and followers. Specifically, we want to see if users with an early creation date are most likely to be followed, as described by the Pagerank algorithm. 
 
-- **Dataset Acquisition and Processing**: We found our data using the provided Stanford data collection website. From there we found the publicly available Twitch Streamer data. Within the downloaded data file, there are two CSV files containing the data for streamers, and edges between the mutual follower relationships. As our data is stored in a file, once we open this data we will first create a map of our vertices to the data it represents. Then, we will create an adjacency list so that we can find connections between vertices (Twitch streamers). Considering the size of the edges file, we will make small experimental files to test our code before processing the entirety of the Twitch Data. We will also have experimental files to test how errors within the data will affect our analysis.
+**Dataset Acquisition and Processing**: We found our data using the provided Stanford data collection website. From there we found the publicly available Twitch Streamer data. Within the downloaded data file, there are two CSV files containing the data for streamers, and edges between the mutual follower relationships.
 
-- **Graph Algorithms**: We are planning to implement a BFS traversal in order to optimize neighboring-node searches. We will use BFS to locate from one streamer to other. We may modify BFS to count the amount of connections between streamers. 
+We will have a vector to store our vertices and it’s respective data. Fortunately, our data has a zero-indexed id system that is already sorted. We will also have an adjacency matrix to store the edge relations between our vertices (streamers). 
 
-Cannot use: For our covered algorithm, we are planning to use Dijkstra’s algorithm as a shortest-path finder between twitch user nodes, which will be our inputs. We expect the Dijkstra’s steps to run at O(m*Log(n)) complexity, where m is the number of edges and n is the number of nodes. 
----
+Considering the size of the edges file, we will make small experimental files to test our code before processing the entirety of the Twitch Data. We will also have experimental files to test how errors within the data will affect our analysis. 
 
-For our uncovered algorithm, we are planning to use the PageRank algorithm. This will show which twitch user has the most connections between other twitch users, as they will end up as the highest PageRank. Future followings could then be predicted by what other users are following the higher PageRank. For PageRank we hope to have a target big O of O(n + m).
 
----
+**Graph Algorithms**: We are planning to implement a BFS traversal in order to optimize neighboring-node searches, i.e. twitch users that follow the same streamers. Our BFS traversal will input a user ID to search for and output the neighboring nodes. Since our dataset is strongly connected around centered vertices, we can use BFS for efficient traversing in our algorithms.
+
+For our first algorithm, we are planning to use PageRank. PageRank will tell us which twitch users will have the highest probability to be clicked on. This probability is directly related to the amount of followers they have (More followers = higher probability to be clicked on). For PageRank we hope to have a target big O of O(n + m). 
+
+For our second algorithm, we will make a graphic output of our graph. We will make a Force-directed graph based on our PageRank analysis of what twitch streamers are the most important. The streamer with the highest probability determined by PageRank will be in the center of the page and the followers will be near the edges of the canvas. If possible, we will try to use more PageRank data to spread out the streamers with the highest importance. 
 
 Timeline: The following timeline is based on our Saturday meetings and assigned project meetings.
 
@@ -23,12 +25,12 @@ Data acquired
   - Experimental CSV test Files Created
   - Program can read data from CSV files
 2. Nov. 20
-  - Begin Dijkstra’s algorithm
-    - Test small parts of algorithm with smaller datasets
+  - Begin Force-Directed Graph algorithm
+    - Test small parts of algorithm with smaller datasets using arbitrary center
   - Begin PageRank algorithm
     - Test small parts of algorithm with smaller datasets
 3. Nov. 27
-  - Assure Dijkstra’s algorithm functions with larger datasets
+  - Assure Force-Directed Graph algorithm functions with larger datasets
     - Test edge cases
   - Assure PageRank algorithm functions with larger datasets
     - Test edge cases
