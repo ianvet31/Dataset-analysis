@@ -1,9 +1,6 @@
 #include "graph.h"
 
 int main() {
-
-    Graph g = Graph();
-    g.test();
     // main
         // constructs graph
     // tests
@@ -15,6 +12,15 @@ int main() {
                 // adjency matrix (double values bc for pageRank)
         // outputVisual()
         // output most probable user()
+
+    bool TEST_STATE = true;
+
+    if (TEST_STATE) {
+        Graph g = Graph("users_test_data.csv", "edges_test_data.csv");
+        g.test();
+    }
+   
+    
 
     return 0;
 }
