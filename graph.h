@@ -14,14 +14,14 @@ class Graph {
         Graph(std::string, std::string);
         void test();
 
-    private: 
+    private:
         // Private variables
 
-        std::vector<std::vector<double>> adjacency_matrix;
+        std::vector<std::vector<bool>> adjacency_matrix;
         // id, views (important/relevant data)
         std::map<int, int> data;
 
         // Helper functions
         // String, token to split at
         std::vector<std::string> split(std::string, std::string);
-};  
+};

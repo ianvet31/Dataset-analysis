@@ -14,6 +14,8 @@ Graph::Graph(std::string datafile, std::string edgefile) {
     std::ifstream fileData(datafile);
     std::ifstream fileEdges(edgefile);
 
+    int numVertices = 0;
+
     if (fileData.is_open()) {
         std::istream_iterator<std::string> data_iter(fileData);
         // Ignore first line
@@ -24,13 +26,39 @@ Graph::Graph(std::string datafile, std::string edgefile) {
             std::vector<std::string> lineData = split(*data_iter, ",");
             // id, views
             data.insert({std::stoi(lineData[5]), std::stoi(lineData[0])});
+            numVertices++;
             ++data_iter;
         }
+    }
+    //set up adjacency matrix
+    adjacency_matrix.resize(numVertices + 1, std::vector<bool>(numVertices + 1));
+    for(int i = 0; i < numVertices; i++){
+        for(int j = 0; j < numVertices; j++){
+            adjacency_matrix[i][j] = 0;
+        }
+    }
+
+    if(fileEdges.is_open()){
+      std::istream_iterator<std::string> edge_iter(fileEdges);
+      // Ignore first line
+      ++edge_iter;
+      while(!fileEdges.eof()){
+        std::vector<std::string> edgeData = split(*edge_iter, ",");
+        //undirected graph, so both orders of pairs get same bool
+        int first = std::stoi(edgeData[0]);
+        int second = std::stoi(edgeData[1]);
+        adjacency_matrix[first][second] = 1;
+        adjacency_matrix[second][first] = 1;
+        ++edge_iter;
+      }
     }
 }
 
 void Graph::test() {
     std::cout << data[1] << std::endl;
+    std::cout << adjacency_matrix[1][1] << std::endl;
+    std::cout << adjacency_matrix[1][2] << std::endl;
+    std::cout << adjacency_matrix[2][1] << std::endl;
 }
 
 // Based off of https://stackoverflow.com/questions/5607589/right-way-to-split-an-stdstring-into-a-vectorstring
