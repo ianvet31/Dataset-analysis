@@ -32,3 +32,9 @@ Goals for Next Week:
 	- getting the test data to connect with some code
 	- make a Twitch Streamer Class
 	- finish BFS (need it for other algorithms)
+
+11/20 - 11/28 Thanksgiving Break
+	- Test data created
+	- Graph class is functional
+	- PageRank class created and produces markov matricies
+	- Force-directed class skeleton created 
