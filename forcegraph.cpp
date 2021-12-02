@@ -46,6 +46,8 @@ void Forcegraph::assign_Positions() {
 void Forcegraph::attractNodes(int node1, int node2) {
   //use Hooke's Law
 
+   // Assumes nodes are connected, need to implement if
+
   double springConstant = 0.0;
 
   double deltaX = abs(get_xpos(node1) - get_xpos(node2));           // maybe easier to use different coordinate system (polar)
@@ -61,6 +63,7 @@ void Forcegraph::attractNodes(int node1, int node2) {
     
     forces[node1].first += f.first;
     forces[node1].second += f.second;
+
     forces[node2].first -= f.first;
     forces[node2].second -= f.second;
   }
@@ -69,10 +72,8 @@ void Forcegraph::attractNodes(int node1, int node2) {
 void Forcegraph::repelNodes(int node1, int node2) {
   //use Coulomb's Law
 
-  // Assumes nodes are connected, need to implement if
-
   for (int j = 0; j < numVertices; j++) {
-    for (int k = j + 1; k < numVertices; k++) {
+    for (int k = numVertices; k > 0; k--) {
 
       double deltaX = pos[j].first - pos[k].first;
       double deltaY = pos[j].second - pos[k].second;
