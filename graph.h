@@ -13,6 +13,7 @@ class Graph {
     public:
         Graph(std::string, std::string);
         void test();
+        std::vector<std::vector<double>> amatrix;
 
     private:
         // Private variables
@@ -24,4 +25,5 @@ class Graph {
         // Helper functions
         // String, token to split at
         std::vector<std::string> split(std::string, std::string);
+        void printAdjacencyMatrix(int size);
 };
