@@ -20,7 +20,7 @@ void Pagerank::setupPageRank(Graph & graph) {
                 count++;
             }
         }
-        if (count > 0) {
+        if (!count) {
             for (size_t j = 0; j < graph.amatrix.size(); j++) {
                 if (graph.amatrix[j][i]) {
                     graph.amatrix[j][i] = double(1)/double(graph.amatrix.size());
@@ -34,6 +34,8 @@ void Pagerank::setupPageRank(Graph & graph) {
     }
     return;
 }
+
+
 
 void Pagerank::printAMatrix(Graph & graph, int size)
 {

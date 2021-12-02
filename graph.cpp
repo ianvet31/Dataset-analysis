@@ -31,6 +31,7 @@ Graph::Graph(std::string datafile, std::string edgefile)
             std::vector<std::string> lineData = split(*data_iter, ",");
             // id, views
             data.insert({std::stoi(lineData[5]), std::stoi(lineData[0])});
+
             numVertices++;
             ++data_iter;
         }
