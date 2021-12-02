@@ -28,7 +28,11 @@ class Graph {
 
         // Helper functions
         // String, token to split at
+
         std::vector<std::string> split(std::string, std::string);
         void printAdjacencyMatrix(int size);
         std::vector<double> viewcount;
+
+         int get_numVertices();
+        std::map<int, int> get_data();
 };
