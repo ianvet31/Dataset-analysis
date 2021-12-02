@@ -12,12 +12,15 @@
 class Graph {
     public:
         Graph(std::string, std::string);
+        bool is_connected(int node1, int node2);
+        std::vector<int> BFS(int start);
         void test();
         std::vector<std::vector<double>> amatrix;
 
+
     private:
         // Private variables
-
+        int numVertices;
         std::vector<std::vector<bool>> adjacency_matrix;
         // id, views (important/relevant data)
         std::map<int, int> data;
