@@ -12,6 +12,10 @@
 
 using namespace std;
 
+Pagerank::Pagerank() {
+    
+}
+
 void Pagerank::setupPageRank(Graph & graph) {
     for (size_t i = 0; i < graph.amatrix.size(); i++) {
         int count = 0;

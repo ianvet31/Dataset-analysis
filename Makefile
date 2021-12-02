@@ -1,5 +1,5 @@
 EXENAME = test_make
-OBJS = main.o graph.o #add other obj files here when making more files
+OBJS = main.o graph.o pagerank.o #add other obj files here when making more files
 
 CXX = clang++
 CXXFLAGS = $(CS225) -std=c++1y -stdlib=libc++ -c -g -O0 -Wall -Wextra -pedantic

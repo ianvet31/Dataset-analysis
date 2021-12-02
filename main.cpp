@@ -1,4 +1,5 @@
 #include "graph.h"
+#include "pagerank.h"
 
 int main() {
     // main
@@ -18,6 +19,9 @@ int main() {
     if (TEST_STATE) {
         Graph g = Graph("users_test_data.csv", "edges_test_data.csv");
         g.test();
+        Pagerank p = Pagerank();
+        p.setupPageRank(&g);
+        p.printAMatrix(&g, g.amatrix.size());
     }
    
     

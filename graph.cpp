@@ -111,8 +111,6 @@ std::vector<int> Graph::BFS(int start){
 
 void Graph::test()
 {
-    std::cout << data[1] << std::endl;
-
     std::vector<int> traversal = BFS(1);
     for(int i = 0; i < numVertices; i++){
       std::cout << traversal[i] << " ";

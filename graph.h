@@ -14,9 +14,10 @@ class Graph {
         Graph(std::string, std::string);
         bool is_connected(int node1, int node2);
         std::vector<int> BFS(int start);
-        void test();
         std::vector<std::vector<double>> amatrix;
 
+        // Used for debugging
+        void test();
 
     private:
         // Private variables
