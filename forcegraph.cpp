@@ -11,8 +11,14 @@
 #include <fstream>
 #include <vector>
 #include <math.h>
+#include <cs225/PNG.h>
+#include <cs225/HSLAPixel.h>
+
 
 //todo - more setup, fix force functions, add equilibrium check, add graphics
+
+
+// update positions over some delta_time for iterations, equil check each time
 
 
 // will want to assign nodes color, size, etc.
@@ -26,6 +32,11 @@ void Forcegraph::setup(Graph & graph) {
         }
     }
     return;
+}
+
+
+bool Forcegraph::equilibrium_check() {
+
 }
 
 
@@ -97,6 +108,25 @@ void Forcegraph::repelNodes(int node1, int node2) {
   }
 
   return;
+}
+
+void Forcegraph::updatePositions(double deltaT) {
+
+  for (int i = 0; i < numVertices; i++) {
+
+    double deltaX = deltaT * forces[i].first;
+    double deltaY = deltaT * forces[i].second;
+
+    pos[i].first += deltaX;
+    pos[i].second += deltaY;
+  }
+}
+
+
+
+
+cs225::PNG Forcegraph::createGraphic() {
+  
 }
 
 /**

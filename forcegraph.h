@@ -11,12 +11,18 @@
 
 class Forcegraph {
   public:
+
+    void setup(Graph &graph);
   
     void attractNodes(int node1, int node2);
     void repelNodes(int node1, int node2);
 
     void assign_Positions();
-    void setup(Graph &graph);
+    void Forcegraph::updatePositions(double deltaT);
+
+    bool Forcegraph::equilibrium_check();
+
+    cs225::PNG Forcegraph::createGraphic();
 
   private:
     //private vars/functions
