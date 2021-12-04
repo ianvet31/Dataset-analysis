@@ -29,6 +29,8 @@ class Forcegraph {
 
     Graph g;
 
+    cs225::PNG output_FDG;
+
     // id, views (important/relevant data)
         std::map<int, int> data;
 

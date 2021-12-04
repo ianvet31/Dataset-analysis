@@ -14,6 +14,7 @@
 #include <cs225/PNG.h>
 #include <cs225/HSLAPixel.h>
 
+using namespace cs225;
 
 //todo - more setup, fix force functions, add equilibrium check, add graphics
 
@@ -70,6 +71,9 @@ void Forcegraph::assign_Positions() {
     }
 
 }
+
+
+// maybe change force functions to loop through all nodes, not two at a time..
  
 void Forcegraph::attractNodes(int node1, int node2, double springConstant, double springRestLength) {
   //use Hooke's Law
@@ -115,7 +119,6 @@ void Forcegraph::repelNodes(int node1, int node2, double coulombConstant) {
   //use Coulomb's Law
 
 
-
   double deltaX = pos[node1].first - pos[node2].first;
   double deltaY = pos[node1].second - pos[node2].second;
 
@@ -132,7 +135,7 @@ void Forcegraph::repelNodes(int node1, int node2, double coulombConstant) {
     f.second = cForce * deltaY / distance;
   }
 
-  if (deltaX < 0) {                              
+  if (deltaX < 0) {                                                       
     forces[node1].first += f.first;               
     forces[node2].first -= f.first;
   } else {
@@ -169,7 +172,19 @@ void Forcegraph::updatePositions(double deltaT) {
 cs225::PNG Forcegraph::createGraphic(int w, int h) {
 
 
-  // probably use cs225 classes to implement
+   cs225::PNG *png = new PNG(w, h);
+
+   for (int i = 0; i < w; i++) {
+     for (int j = 0; j < h; j++) {
+
+       HSLAPixel & curpix = png->getPixel(i, j);
+        //....
+     }
+   }
+
+
+  // draw circles for nodes, sizes based on data maybe?
+  // lines for edges
   
   
 }

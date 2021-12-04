@@ -19,7 +19,7 @@ class Graph {
 
         int get_numVertices();
         std::map<int, int> get_data();
-
+        
         // Used for debugging
         void test();
 
