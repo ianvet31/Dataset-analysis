@@ -81,6 +81,7 @@ Graph::Graph(std::string datafile, std::string edgefile)
     }
 }
 
+
 bool Graph::is_connected(int node1, int node2){
   return adjacency_matrix[node1][node2];
 }
@@ -158,3 +159,13 @@ void Graph::printAdjacencyMatrix(int size)
         std::cout << std::endl;
     }
 }
+
+
+int Graph::get_numVertices() {
+    return numVertices;
+}
+
+std::map<int, int> Graph::get_data() {
+    return data;
+}
+

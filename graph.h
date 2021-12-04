@@ -16,6 +16,10 @@ class Graph {
         std::vector<int> BFS(int start);
         std::vector<std::vector<double>> amatrix;
 
+
+        int get_numVertices();
+        std::map<int, int> get_data();
+        
         // Used for debugging
         void test();
 
@@ -28,6 +32,7 @@ class Graph {
 
         // Helper functions
         // String, token to split at
+
         std::vector<std::string> split(std::string, std::string);
         void printAdjacencyMatrix(int size);
         std::vector<double> viewcount;
