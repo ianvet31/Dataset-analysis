@@ -1,5 +1,6 @@
 #include "graph.h"
 #include "pagerank.h"
+#include <iostream>
 
 int main() {
     // main
@@ -18,10 +19,13 @@ int main() {
 
     if (TEST_STATE) {
         Graph g = Graph("users_test_data.csv", "edges_test_data.csv");
-        g.test();
+        // g.test();
         Pagerank p = Pagerank();
-        p.setupPageRank(&g);
-        p.printAMatrix(&g, g.amatrix.size());
+        p.printAMatrix(g, g.amatrix.size());
+        std::cout << "setup page rank" << std::endl;
+        p.setupPageRank(g);
+        p.printAMatrix(g, g.amatrix.size());
+
     }
    
     
