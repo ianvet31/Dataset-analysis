@@ -1,5 +1,6 @@
 #include "graph.h"
 #include "pagerank.h"
+#include "forcegraph.h"
 
 int main() {
     // main
@@ -20,8 +21,8 @@ int main() {
         Graph g = Graph("users_test_data.csv", "edges_test_data.csv");
         g.test();
         Pagerank p = Pagerank();
-        p.setupPageRank(&g);
-        p.printAMatrix(&g, g.amatrix.size());
+        p.setupPageRank(g);
+        p.printAMatrix(g, g.amatrix.size());
     }
    
     

@@ -24,7 +24,7 @@ using namespace cs225;
 
 
 
-void Forcegraph::setup(Graph & graph) {   // will want to assign nodes color, size, etc.
+void Forcegraph::setup(Graph & graph, double springconst, double springlen, double coulombconst, double delta_time) {   // will want to assign nodes color, size, etc.
 
     g = graph;
     numVertices = graph.get_numVertices();
@@ -37,6 +37,7 @@ void Forcegraph::setup(Graph & graph) {   // will want to assign nodes color, si
         }
       }
     }
+    applyForces(springconst, springlen, coulombconst, delta_time);
 
 
 
@@ -45,6 +46,16 @@ void Forcegraph::setup(Graph & graph) {   // will want to assign nodes color, si
     return;
 }
 
+void Forcegraph::applyForces(double springconst, double springlen, double coulombconst, double delta_time) {
+  assign_Positions();
+  while (!equilibrium_check()) {
+    attractNodes(springconst, springlen);
+    repelNodes(coulombconst);
+    updatePositions(delta_time);
+
+
+  }
+}
 
 bool Forcegraph::equilibrium_check() {        // confirms that x and y components of force are zero for each node
 
@@ -75,83 +86,89 @@ void Forcegraph::assign_Positions() {
 
 // maybe change force functions to loop through all nodes, not two at a time..
  
-void Forcegraph::attractNodes(int node1, int node2, double springConstant, double springRestLength) {
+void Forcegraph::attractNodes(double springConstant, double springRestLength) {
   //use Hooke's Law
 
-  if (!g.is_connected(node1, node2)) {
-    return;
-  }
+  for (int i = 0; i < numVertices; i++) {
+    for (int j = i + 1; j < numVertices; j++) {
+
+      if (!g.is_connected(i, j)) {
+        continue;
+      }
   
+      double deltaX = pos[i].first - pos[j].first;
+      double deltaY = pos[i].second - pos[j].second;
 
-  double deltaX = pos[node1].first - pos[node2].first;
-  double deltaY = pos[node1].second - pos[node2].second;
+      double distance = std::sqrt(deltaX * deltaX + deltaY * deltaY);
 
-  double distance = std::sqrt(deltaX * deltaX + deltaY * deltaY);
 
-  if (distance != 0) {
-    std::pair<double, double> f = {0, 0};
-    double sforce = springConstant * (distance - springRestLength);    // spring force is linear with seperation (F = k*d)
+      if (distance != 0) {
+        std::pair<double, double> f = {0, 0};
+        double sforce = springConstant * (distance - springRestLength);    // spring force is linear with seperation (F = k*d)
 
-    f.first = sforce * (deltaX / distance);         //x component of force  (cos(theta))
-    f.second = sforce * (deltaY / distance);        //y component of force  (sin(theta))
+       f.first = sforce * (deltaX / distance);         //x component of force  (cos(theta))
+       f.second = sforce * (deltaY / distance);        //y component of force  (sin(theta))
     
-    if (deltaX < 0) {                               // may revisit this approach
-      forces[node1].first += f.first;               // if deltaX from node1 -> node2 is negative, attractive spring force should point in +x for node1 and -x for node2
-      forces[node2].first -= f.first;
-    } else {
-      forces[node1].first -= f.first;
-      forces[node2].first += f.first;         
-    }
+       if (deltaX < 0) {                                                       
+        forces[i].first += f.first;               
+        forces[j].first -= f.first;
+       } else {
+        forces[i].first -= f.first;
+        forces[j].first += f.first;         
+       }
 
-    if (deltaY < 0) {
-      forces[node1].second += f.second;              //same for y
-      forces[node2].second += f.second;
-    } else {
-      forces[node1].second += f.second;
-      forces[node2].second += f.second;
+        if (deltaY < 0) {
+          forces[i].second += f.second;            
+          forces[j].second -= f.second;
+        } else {
+          forces[i].second -= f.second;
+          forces[j].second += f.second;
+        }
+      }
     }
   }
-
-  return;
- 
 }
-void Forcegraph::repelNodes(int node1, int node2, double coulombConstant) {
+void Forcegraph::repelNodes(double coulombConstant) {
   //use Coulomb's Law
+  for (int i = 0; i < numVertices; i++) {
+    for (int j = i + 1; j < numVertices; j++) {
+
+      double deltaX = pos[i].first - pos[j].first;
+      double deltaY = pos[i].second - pos[j].second;
+
+      double distance = std::sqrt(deltaX * deltaX + deltaY * deltaY);
 
 
-  double deltaX = pos[node1].first - pos[node2].first;
-  double deltaY = pos[node1].second - pos[node2].second;
+      std::pair<double, double> f = {0, 0};
 
-  double distance = std::sqrt(deltaX * deltaX + deltaY * deltaY);
+      if (distance == 0) {
+        f = {std::rand() % 100, std::rand() % 100}; // idk
+      } else {
+       double cForce = coulombConstant / (distance * distance);      // coulomb constant could depend on actual data? force is currently just based on distance between vertices
+        f.first = cForce * deltaX / distance;
+        f.second = cForce * deltaY / distance;
+      }
 
+      if (deltaX < 0) {                                                       
+        forces[i].first += f.first;               
+        forces[j].first -= f.first;
+      } else {
+        forces[i].first -= f.first;
+        forces[j].first += f.first;         
+      }
 
-  std::pair<double, double> f = {0, 0};
+      if (deltaY < 0) {
+        forces[i].second += f.second;            
+        forces[j].second -= f.second;
+      } else {
+        forces[i].second -= f.second;
+        forces[j].second += f.second;
+      }
 
-  if (distance == 0) {
-    f = {std::rand() % 100, std::rand() % 100}; // idk
-  } else {
-    double cForce = coulombConstant / (distance * distance);      // coulomb constant could depend on actual data? force is currently just based on distance between vertices
-    f.first = cForce * deltaX / distance;
-    f.second = cForce * deltaY / distance;
+    }
   }
 
-  if (deltaX < 0) {                                                       
-    forces[node1].first += f.first;               
-    forces[node2].first -= f.first;
-  } else {
-    forces[node1].first -= f.first;
-    forces[node2].first += f.first;         
-  }
-
-  if (deltaY < 0) {
-    forces[node1].second += f.second;            
-    forces[node2].second += f.second;
-  } else {
-    forces[node1].second += f.second;
-    forces[node2].second += f.second;
-  }
-
-  return;
+  
 }
 
 void Forcegraph::updatePositions(double deltaT) {
@@ -168,25 +185,66 @@ void Forcegraph::updatePositions(double deltaT) {
 
 
 
+void Forcegraph::node_graphics() {
+
+  for (int i = 0; i < numVertices; i++) {
+     int viewcount = data.at(i);
+     if (viewcount > 10000000) {
+       node_params[i].first = 0.0;
+       node_params[i].second = 10.0;
+     } else if (viewcount > 1000000) {
+       node_params[i].first = 20.0;
+       node_params[i].second = 7.0;
+     } else if (viewcount > 100000) {
+       node_params[i].first = 45.0;
+       node_params[i].second = 5.0;
+     } else if (viewcount > 1000) {
+       node_params[i].first = 65.0;
+       node_params[i].second = 3.0;
+     } else {
+       node_params[i].first = 90.0;
+       node_params[i].second = 1.0;
+     }
+   }
+   
+
+}
 
 cs225::PNG Forcegraph::createGraphic(int w, int h) {
 
+  node_graphics();
 
-   cs225::PNG *png = new PNG(w, h);
+  cs225::PNG *png = new PNG(w, h);
 
-   for (int i = 0; i < w; i++) {
-     for (int j = 0; j < h; j++) {
 
+  for (int i = 0; i < numVertices; i++) {
+    for (int j = 0; i < w; i++) {
+      for (int k = 0; j < h; j++) {
+
+       std::pair<double, double> curr_pos = pos[i];
        HSLAPixel & curpix = png->getPixel(i, j);
-        //....
+
+       double radius = sqrt((j - curr_pos.first)*(j - curr_pos.first) + (k - curr_pos.second)*(k - curr_pos.second));
+
+       if (radius < node_params[i].second) {
+         curpix.h = node_params[i].first;
+         curpix.s = 1.0;
+         curpix.l = 0.5;
+
+       } else {
+         curpix.h = 0.0;
+         curpix.s = 0.0;
+         curpix.l = 1.0;
+       }
+       
      }
    }
 
+  }
 
-  // draw circles for nodes, sizes based on data maybe?
-  // lines for edges
-  
-  
+  png->writeToFile("FDG_out.png");
+
+
 }
 
 
