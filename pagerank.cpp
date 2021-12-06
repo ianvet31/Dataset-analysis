@@ -17,9 +17,14 @@ Pagerank::Pagerank() {
 }
 
 void Pagerank::setupPageRank(Graph & graph) {
+
+    std::cout << "graph is passed" << graph.amatrix[0][0] << std::endl;
+
     for (size_t i = 0; i < graph.amatrix.size(); i++) {
         int count = 0;
-        for (size_t j = 0; i < graph.amatrix.size(); j++) {
+
+        // BUG: j was unbounded 
+        for (size_t j = 0; j < graph.amatrix.size(); j++) {
             if (graph.amatrix[j][i]) {
                 count++;
             }
