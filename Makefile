@@ -36,6 +36,25 @@ $(EXENAME) : output_msg $(OBJS)
 main.o : main.cpp #file and any include
 	$(CXX) $(CXXFLAGS) main.cpp
 
+graph.o : graph.cpp graph.h #file and any include
+	$(CXX) $(CXXFLAGS) graph.cpp
+
+pagerank.o : pagerank.cpp pagerank.h #file and any include
+	$(CXX) $(CXXFLAGS) pagerank.cpp
+
+forcegraph.o : forcegraph.cpp forcegraph.h #file and any include
+	$(CXX) $(CXXFLAGS) forcegraph.cpp
+
+
+PNG.o: cs225/PNG.cpp cs225/PNG.h cs225/HSLAPixel.h cs225/lodepng/lodepng.h
+	$(CXX) $(CXXFLAGS) cs225/PNG.cpp
+
+HSLAPixel.o: cs225/HSLAPixel.cpp cs225/HSLAPixel.h
+	$(CXX) $(CXXFLAGS) cs225/HSLAPixel.cpp
+
+lodepng.o: cs225/lodepng/lodepng.cpp cs225/lodepng/lodepng.h
+	$(CXX) $(CXXFLAGS) cs225/lodepng/lodepng.cpp
+
 # add other files and their includes in the same format below
 
 
