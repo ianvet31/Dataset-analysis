@@ -4,10 +4,14 @@
  */
 
 #pragma once
+#include "cs225/PNG.h"
+#include "cs225/HSLAPixel.h"
+#include "graph.h"
 #include <string>
 #include <vector>
 #include <map>
-#include "Graph.h"
+
+
 
 class Forcegraph {
   public:
@@ -28,7 +32,7 @@ class Forcegraph {
     //private vars/functions
 
     Graph g;
-
+    
     cs225::PNG output_FDG;
 
     int width;

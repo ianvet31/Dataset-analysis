@@ -4,7 +4,6 @@
  */
 
 #include "forcegraph.h"
-#include "graph.h"
 #include <iostream>
 #include <algorithm>
 #include <iterator>
@@ -14,13 +13,11 @@
 #include <cs225/PNG.h>
 #include <cs225/HSLAPixel.h>
 
-using namespace cs225;
 
 //todo - more setup, fix force functions, add equilibrium check, add graphics
 
 
 // update positions over some delta_time for iterations, equil check each time
-
 
 
 
@@ -38,6 +35,8 @@ void Forcegraph::setup(Graph & graph, double springconst, double springlen, doub
       }
     }
     applyForces(springconst, springlen, coulombconst, delta_time);
+
+    createGraphic(800, 600);
 
 
 
@@ -214,7 +213,7 @@ cs225::PNG Forcegraph::createGraphic(int w, int h) {
 
   node_graphics();
 
-  cs225::PNG *png = new PNG(w, h);
+  cs225::PNG *png = new cs225::PNG(w, h);
 
 
   for (int i = 0; i < numVertices; i++) {
@@ -222,7 +221,7 @@ cs225::PNG Forcegraph::createGraphic(int w, int h) {
       for (int k = 0; j < h; j++) {
 
        std::pair<double, double> curr_pos = pos[i];
-       HSLAPixel & curpix = png->getPixel(i, j);
+       cs225::HSLAPixel & curpix = png->getPixel(i, j);
 
        double radius = sqrt((j - curr_pos.first)*(j - curr_pos.first) + (k - curr_pos.second)*(k - curr_pos.second));
 
