@@ -18,12 +18,12 @@
 
 
 // update positions over some delta_time for iterations, equil check each time
+Forcegraph::Forcegraph() {
 
+}
 
+void Forcegraph::setup(Graph &graph, double springconst, double springlen, double coulombconst, double delta_time) {   // will want to assign nodes color, size, etc.
 
-void Forcegraph::setup(Graph & graph, double springconst, double springlen, double coulombconst, double delta_time) {   // will want to assign nodes color, size, etc.
-
-    g = graph;
     numVertices = graph.get_numVertices();
     data = graph.get_data();
 
@@ -34,7 +34,7 @@ void Forcegraph::setup(Graph & graph, double springconst, double springlen, doub
         }
       }
     }
-    applyForces(springconst, springlen, coulombconst, delta_time);
+    applyForces(graph, springconst, springlen, coulombconst, delta_time);
 
     createGraphic(800, 600);
 
@@ -45,10 +45,10 @@ void Forcegraph::setup(Graph & graph, double springconst, double springlen, doub
     return;
 }
 
-void Forcegraph::applyForces(double springconst, double springlen, double coulombconst, double delta_time) {
+void Forcegraph::applyForces(Graph &g, double springconst, double springlen, double coulombconst, double delta_time) {
   assign_Positions();
   while (!equilibrium_check()) {
-    attractNodes(springconst, springlen);
+    attractNodes(g, springconst, springlen);
     repelNodes(coulombconst);
     updatePositions(delta_time);
 
@@ -85,7 +85,7 @@ void Forcegraph::assign_Positions() {
 
 // maybe change force functions to loop through all nodes, not two at a time..
  
-void Forcegraph::attractNodes(double springConstant, double springRestLength) {
+void Forcegraph::attractNodes(Graph &g, double springConstant, double springRestLength) {
   //use Hooke's Law
 
   for (int i = 0; i < numVertices; i++) {

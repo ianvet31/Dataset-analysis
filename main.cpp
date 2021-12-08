@@ -26,8 +26,11 @@ int main() {
         p.printAMatrix(g, g.amatrix.size());
         p.printAMatrix(g, g.amatrix.size());
         std::cout << "setup page rank" << std::endl;
-        p.setupPageRank(g);
-        p.printAMatrix(g, g.amatrix.size());
+
+        Forcegraph f = Forcegraph();
+        f.setup(g, 5.0, 5.0, 5.0, 1.0);
+
+        
 
     }
    

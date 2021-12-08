@@ -6,32 +6,32 @@
 #pragma once
 #include "cs225/PNG.h"
 #include "cs225/HSLAPixel.h"
-#include "graph.h"
 #include <string>
 #include <vector>
 #include <map>
+#include "graph.h"
 
 
 
 class Forcegraph {
   public:
 
+    Forcegraph();
+    void setup(Graph &graph, double springconst, double springlen, double coulombconst, double delta_time);
   
-    void setup(Graph & graph, double springconst, double springlen, double coulombconst, double delta_time);
-  
-    void attractNodes(double sConstant, double sRestLength);
+    void attractNodes(Graph &g, double sConstant, double sRestLength);
     void repelNodes(double cConstant);
 
     void assign_Positions();
-    void Forcegraph::updatePositions(double deltaT);
+    void updatePositions(double deltaT);
 
 
-    cs225::PNG Forcegraph::createGraphic(int w, int h);
+    cs225::PNG createGraphic(int w, int h);
 
   private:
     //private vars/functions
 
-    Graph g;
+
     
     cs225::PNG output_FDG;
 
@@ -55,11 +55,11 @@ class Forcegraph {
 
 
 
-    void Forcegraph::node_graphics();
+    void node_graphics();
 
     std::vector<std::pair<double, double>> node_params;  //hue [0, 360] and size of node (radius of circle)
 
-    void Forcegraph::applyForces(double springconst, double springlen, double coulombconst, double delta_time);
+    void applyForces(Graph &g, double springconst, double springlen, double coulombconst, double delta_time);
 
-    bool Forcegraph::equilibrium_check();
+    bool equilibrium_check();
 };
