@@ -209,19 +209,19 @@ void Forcegraph::node_graphics() {
 
 }
 
-cs225::PNG Forcegraph::createGraphic(int w, int h) {
+void Forcegraph::createGraphic(unsigned int w, unsigned int h) {
 
   node_graphics();
 
-  cs225::PNG *png = new cs225::PNG(w, h);
+  cs225::PNG png(width, height);
 
 
   for (int i = 0; i < numVertices; i++) {
-    for (int j = 0; i < w; i++) {
-      for (int k = 0; j < h; j++) {
+    for (unsigned int j = 0; i < w; i++) {
+      for (unsigned int k = 0; j < h; j++) {
 
        std::pair<double, double> curr_pos = pos[i];
-       cs225::HSLAPixel & curpix = png->getPixel(i, j);
+       cs225::HSLAPixel & curpix = png.getPixel(i, j);
 
        double radius = sqrt((j - curr_pos.first)*(j - curr_pos.first) + (k - curr_pos.second)*(k - curr_pos.second));
 
@@ -241,7 +241,9 @@ cs225::PNG Forcegraph::createGraphic(int w, int h) {
 
   }
 
-  png->writeToFile("FDG_out.png");
+  png.writeToFile("FDG_out.png");
+
+
 
 
 }

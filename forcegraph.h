@@ -26,7 +26,7 @@ class Forcegraph {
     void updatePositions(double deltaT);
 
 
-    cs225::PNG createGraphic(int w, int h);
+    void createGraphic(unsigned w, unsigned h);
 
   private:
     //private vars/functions
