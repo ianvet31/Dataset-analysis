@@ -10,8 +10,10 @@
 #include <fstream>
 #include <vector>
 #include <math.h>
-#include <cs225/PNG.h>
-#include <cs225/HSLAPixel.h>
+#include "cs225/PNG.h"
+using cs225::PNG;
+#include "cs225/HSLAPixel.h"
+using cs225::HSLAPixel;
 
 
 //todo - more setup, fix force functions, add equilibrium check, add graphics
@@ -98,7 +100,7 @@ void Forcegraph::attractNodes(Graph &g, double springConstant, double springRest
       double deltaX = pos[i].first - pos[j].first;
       double deltaY = pos[i].second - pos[j].second;
 
-      double distance = std::sqrt(deltaX * deltaX + deltaY * deltaY);
+      double distance = sqrt(deltaX * deltaX + deltaY * deltaY);
 
 
       if (distance != 0) {
@@ -135,7 +137,7 @@ void Forcegraph::repelNodes(double coulombConstant) {
       double deltaX = pos[i].first - pos[j].first;
       double deltaY = pos[i].second - pos[j].second;
 
-      double distance = std::sqrt(deltaX * deltaX + deltaY * deltaY);
+      double distance = sqrt(deltaX * deltaX + deltaY * deltaY);
 
 
       std::pair<double, double> f = {0, 0};
