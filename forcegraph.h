@@ -17,7 +17,7 @@ class Forcegraph {
   public:
 
     Forcegraph();
-    void setup(Graph &graph, double springconst, double springlen, double coulombconst, double delta_time);
+    void setup(Graph &graph, double springconst, double springlen, double coulombconst, double delta_time, int wid, int hei);
   
     void attractNodes(Graph &g, double sConstant, double sRestLength);
     void repelNodes(double cConstant);

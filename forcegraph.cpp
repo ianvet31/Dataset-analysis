@@ -24,8 +24,10 @@ Forcegraph::Forcegraph() {
 
 }
 
-void Forcegraph::setup(Graph &graph, double springconst, double springlen, double coulombconst, double delta_time) {   // will want to assign nodes color, size, etc.
+void Forcegraph::setup(Graph &graph, double springconst, double springlen, double coulombconst, double delta_time, int w, int h) {   // will want to assign nodes color, size, etc.
 
+    width = w;
+    height = h;
     numVertices = graph.get_numVertices();
     data = graph.get_data();
 
@@ -60,8 +62,8 @@ void Forcegraph::applyForces(Graph &g, double springconst, double springlen, dou
 
 bool Forcegraph::equilibrium_check() {        // confirms that x and y components of force are zero for each node
 
-  for (int i = 0; i < numVertices + 1; i++) {
-    if (forces[i].first != 0 || forces[i].second != 0) {
+  for (int i = 0; i < numVertices; i++) {
+    if (!(abs(forces[i].first) < 1) || !(abs(forces[i].second) < 1)) {
       return false;
     }
   }
@@ -78,7 +80,7 @@ void Forcegraph::assign_Positions() {
     pos.resize(numVertices, {0, 0});          //init position and forces for nodes
     forces.resize(numVertices, {0, 0});
 
-    for (int i = 0; i < numVertices + 1; i++) {
+    for (int i = 0; i < numVertices; i++) {
       pos.push_back(std::make_pair(std::rand() % width, std::rand() % height)); 
     }
 
@@ -151,19 +153,19 @@ void Forcegraph::repelNodes(double coulombConstant) {
       }
 
       if (deltaX < 0) {                                                       
-        forces[i].first += f.first;               
-        forces[j].first -= f.first;
+        forces[i].first -= f.first;               
+        forces[j].first += f.first;
       } else {
-        forces[i].first -= f.first;
-        forces[j].first += f.first;         
+        forces[i].first += f.first;
+        forces[j].first -= f.first;         
       }
 
       if (deltaY < 0) {
-        forces[i].second += f.second;            
-        forces[j].second -= f.second;
-      } else {
-        forces[i].second -= f.second;
+        forces[i].second -= f.second;            
         forces[j].second += f.second;
+      } else {
+        forces[i].second += f.second;
+        forces[j].second -= f.second;
       }
 
     }
