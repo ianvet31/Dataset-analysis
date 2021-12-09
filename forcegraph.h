@@ -17,9 +17,9 @@ class Forcegraph {
   public:
 
     Forcegraph();
-    void setup(Graph &graph, double springconst, double springlen, double coulombconst, double delta_time, int wid, int hei);
+    void setup(Graph graph, double springconst, double springlen, double coulombconst, double delta_time, int max_i_, int wid, int hei);
   
-    void attractNodes(Graph &g, double sConstant, double sRestLength);
+    void attractNodes(Graph g, double sConstant, double sRestLength);
     void repelNodes(double cConstant);
 
     void assign_Positions();
@@ -59,7 +59,7 @@ class Forcegraph {
 
     std::vector<std::pair<double, double>> node_params;  //hue [0, 360] and size of node (radius of circle)
 
-    void applyForces(Graph &g, double springconst, double springlen, double coulombconst, double delta_time);
+    void applyForces(Graph g, double springconst, double springlen, double coulombconst, double delta_time, int max_i_);
 
     bool equilibrium_check();
 };

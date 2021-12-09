@@ -28,7 +28,7 @@ int main() {
         std::cout << "setup page rank" << std::endl;
 
         Forcegraph f = Forcegraph();
-        f.setup(g, 5.0, 5.0, 5.0, 1.0, 800, 600);
+        f.setup(g, 5.0, 5.0, 5.0, 1.0, 800, 600, 300);
 
         
 

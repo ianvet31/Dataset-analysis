@@ -24,21 +24,21 @@ Forcegraph::Forcegraph() {
 
 }
 
-void Forcegraph::setup(Graph &graph, double springconst, double springlen, double coulombconst, double delta_time, int w, int h) {   // will want to assign nodes color, size, etc.
+void Forcegraph::setup(Graph graph, double springconst, double springlen, double coulombconst, double delta_time, int max_i, int w, int h) {   // will want to assign nodes color, size, etc.
 
     width = w;
     height = h;
     numVertices = graph.get_numVertices();
     data = graph.get_data();
 
-    for (int i = 0; i < numVertices + 1; i++) {
-      for (int j = 0; j < numVertices + 1; j++) {
-        if (graph.amatrix[i][j] == 1) {
-          edges.push_back(std::make_pair(i, j));
-        }
-      }
-    }
-    applyForces(graph, springconst, springlen, coulombconst, delta_time);
+    //for (int i = 0; i < numVertices + 1; i++) {
+     // for (int j = 0; j < numVertices + 1; j++) {
+      //  if (graph.amatrix[i][j] == 1) {
+      //    edges.push_back(std::make_pair(i, j));
+     //   }
+     // }
+  //  }
+    applyForces(graph, springconst, springlen, coulombconst, delta_time, max_i);
 
     createGraphic(800, 600);
 
@@ -49,12 +49,14 @@ void Forcegraph::setup(Graph &graph, double springconst, double springlen, doubl
     return;
 }
 
-void Forcegraph::applyForces(Graph &g, double springconst, double springlen, double coulombconst, double delta_time) {
+void Forcegraph::applyForces(Graph g, double springconst, double springlen, double coulombconst, double delta_time, int max_iter) {
   assign_Positions();
-  while (!equilibrium_check()) {
+  int i = 0;
+  while (!equilibrium_check() || i == max_iter) {
     attractNodes(g, springconst, springlen);
     repelNodes(coulombconst);
     updatePositions(delta_time);
+    i++;
 
 
   }
@@ -89,7 +91,7 @@ void Forcegraph::assign_Positions() {
 
 // maybe change force functions to loop through all nodes, not two at a time..
  
-void Forcegraph::attractNodes(Graph &g, double springConstant, double springRestLength) {
+void Forcegraph::attractNodes(Graph g, double springConstant, double springRestLength) {
   //use Hooke's Law
 
   for (int i = 0; i < numVertices; i++) {
