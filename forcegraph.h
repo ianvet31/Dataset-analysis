@@ -17,7 +17,7 @@ class Forcegraph {
   public:
 
     Forcegraph();
-    void setup(Graph graph, double springconst, double springlen, double coulombconst, double delta_time, int max_i_, int wid, int hei);
+    void setup(Graph graph, double springconst, double springlen, double coulombconst, double delta_time, int max_i_, unsigned wid, unsigned hei);
   
     void attractNodes(Graph g, double sConstant, double sRestLength);
     void repelNodes(double cConstant);
@@ -26,7 +26,7 @@ class Forcegraph {
     void updatePositions(double deltaT);
 
 
-    void createGraphic(unsigned w, unsigned h);
+    void createGraphic();
 
   private:
     //private vars/functions
@@ -35,8 +35,8 @@ class Forcegraph {
     
     cs225::PNG output_FDG;
 
-    int width;
-    int height;
+    unsigned width;
+    unsigned height;
 
     // id, views (important/relevant data)
         std::map<int, int> data;
