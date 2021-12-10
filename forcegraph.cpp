@@ -63,7 +63,7 @@ void Forcegraph::setup(Graph graph, double springconst, double springlen, double
 
 
     node_graphics();
-    createGraphic();
+    createGraphic(graph);
 
 
 
@@ -129,33 +129,35 @@ void Forcegraph::attractNodes(Graph g, double springConstant, double springRestL
       }
 
   
-      double deltaX = pos[i].first - pos[j].first;
-      double deltaY = pos[i].second - pos[j].second;
+      double deltaX = pos[j].first - pos[i].first;
+      double deltaY = pos[j].second - pos[i].second;
 
       double distance = sqrt(deltaX * deltaX + deltaY * deltaY);
+
 
 
       if (distance != 0) {
         std::pair<double, double> f = {0, 0};
         double sforce = springConstant * (distance - springRestLength);    // spring force is linear with seperation (F = k*d)
 
-       f.first = sforce * (deltaX / distance);         //x component of force  (cos(theta))
-       f.second = sforce * (deltaY / distance);        //y component of force  (sin(theta))
+       f.first = sforce * abs(deltaX / distance);         //x component of force  (cos(theta))
+       f.second = sforce * abs(deltaY / distance);        //y component of force  (sin(theta))
     
+       
        if (deltaX < 0) {                                                       
-        forces[i].first += f.first;               
-        forces[j].first -= f.first;
+        forces[i].first -= f.first;               
+        forces[j].first += f.first;
        } else {
-        forces[i].first -= f.first;
-        forces[j].first += f.first;         
+        forces[i].first += f.first;
+        forces[j].first -= f.first;         
        }
 
         if (deltaY < 0) {
-          forces[i].second += f.second;            
-          forces[j].second -= f.second;
-        } else {
-          forces[i].second -= f.second;
+          forces[i].second -= f.second;            
           forces[j].second += f.second;
+        } else {
+          forces[i].second += f.second;
+          forces[j].second -= f.second;
         }
       }
     }
@@ -166,8 +168,8 @@ void Forcegraph::repelNodes(double coulombConstant) {
   for (int i = 0; i < numVertices; i++) {
     for (int j = i + 1; j < numVertices; j++) {
 
-      double deltaX = pos[i].first - pos[j].first;
-      double deltaY = pos[i].second - pos[j].second;
+      double deltaX = pos[j].first - pos[i].first;
+      double deltaY = pos[j].second - pos[i].second;
 
       double distance = sqrt(deltaX * deltaX + deltaY * deltaY);
 
@@ -175,27 +177,30 @@ void Forcegraph::repelNodes(double coulombConstant) {
       std::pair<double, double> f = {0, 0};
 
       if (distance == 0) {
-        f = {std::rand() % 100, std::rand() % 100}; // idk
+        pos[i] = {std::rand() % (width - 50) + 50, std::rand() % (height - 50) + 50};
+        pos[j] = {std::rand() % (width - 50) + 50, std::rand() % (height - 50) + 50};
+        continue;
+
       } else {
        double cForce = coulombConstant / (distance * distance);      // coulomb constant could depend on actual data? force is currently just based on distance between vertices
-        f.first = cForce * deltaX / distance;
-        f.second = cForce * deltaY / distance;
+        f.first = cForce * abs(deltaX / distance);
+        f.second = cForce * abs(deltaY / distance);
       }
 
       if (deltaX < 0) {                                                       
-        forces[i].first -= f.first;               
-        forces[j].first += f.first;
+        forces[i].first += f.first;               
+        forces[j].first -= f.first;
       } else {
-        forces[i].first += f.first;
-        forces[j].first -= f.first;         
+        forces[i].first -= f.first;
+        forces[j].first += f.first;         
       }
 
       if (deltaY < 0) {
-        forces[i].second -= f.second;            
-        forces[j].second += f.second;
-      } else {
-        forces[i].second += f.second;
+        forces[i].second += f.second;            
         forces[j].second -= f.second;
+      } else {
+        forces[i].second -= f.second;
+        forces[j].second += f.second;
       }
 
     }
@@ -211,11 +216,22 @@ void Forcegraph::updatePositions(double deltaT) {
     double deltaX = deltaT * forces[i].first;
     double deltaY = deltaT * forces[i].second;
 
+    std::cout << forces[i].first << std::endl;
+    std::cout << forces[i].second << std::endl;
+
     if (((pos[i].first + deltaX) < 750) && ((pos[i].first + deltaX) > 50)) {
       pos[i].first += deltaX;     
+    } else if (deltaX > 0) {
+      pos[i].first = 749;
+    } else {
+      pos[i].first = 51;
     }
     if (((pos[i].second + deltaY) < 550) && ((pos[i].second + deltaY) > 50)) {
       pos[i].second += deltaY;    
+    } else if (deltaY > 0) {
+      pos[i].second = 549;
+    } else {
+      pos[i].second = 51;
     }
   }
 }
@@ -249,7 +265,7 @@ void Forcegraph::node_graphics() {
 
 }
 
-void Forcegraph::createGraphic() {
+void Forcegraph::createGraphic(Graph g) {
 
 
   cs225::PNG png(width, height);
@@ -280,6 +296,71 @@ void Forcegraph::createGraphic() {
      }
    }
   }
+
+    
+
+   for (unsigned j = 0; j < numVertices; j++) {
+      for (unsigned k = j + 1; k < numVertices; k++) {
+        if (g.is_connected(j, k)) {
+
+            double node_1x = pos[j].first;
+            double node_1y = pos[j].second;
+            double node_2x = pos[k].first;
+            double node_2y = pos[k].second;
+
+            double dX = node_2x - node_1x;
+            double dY = node_2y - node_1y;
+
+        
+            unsigned start_x = 0;
+            unsigned start_y = 0;
+            unsigned end_x = 0;
+            unsigned end_y = 0;
+            double slope = 0;
+
+
+            
+
+
+            if (dX > 0) {
+              start_x = (unsigned int) node_1x;
+              start_y = (unsigned int) node_1y;
+              end_x = (unsigned int) node_2x;
+              end_y = (unsigned int) node_2y;
+              slope = dY / dX;
+              
+
+
+            } 
+            if (dX < 0) {
+              start_x = (unsigned int) node_2x;
+              start_y = (unsigned int) node_2y;
+              end_x = (unsigned int) node_1x;
+              end_y = (unsigned int) node_1y;
+              slope = dY / dX;
+              
+            }
+            
+      
+            double y = start_y;
+            for (unsigned x = start_x; x < end_x; x++) {
+              cs225::HSLAPixel & curpix = png.getPixel(x, (unsigned) y);
+              curpix.h = 0.0;
+              curpix.s = 1.0;
+              curpix.l = 0.0;
+
+              y += slope;
+
+                 
+            }
+
+
+            
+        } else {
+
+        }
+      }
+   }
 
   png.writeToFile("FDG_out.png");
 

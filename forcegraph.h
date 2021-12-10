@@ -26,7 +26,7 @@ class Forcegraph {
     void updatePositions(double deltaT);
 
 
-    void createGraphic();
+    void createGraphic(Graph graph);
 
   private:
     //private vars/functions
