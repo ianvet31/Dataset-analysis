@@ -34,7 +34,7 @@ int main() {
 
         // FDG args: graph g, spring constant, spring rest length, coulomb constant, time step (delta T), max # of iterations, width and height of output
         
-        f.setup(g, 0.05, 250., 75000.0, 1.0, 100, w, h);  // FDG parameters are fairly sensitive, equilibrium can usually be achieved with small spring const (~10^-2) and large coulomb (~10^4)
+        f.setup(g, 0.05, 250., 10000.0, 1.0, 100, w, h);  // FDG parameters are fairly sensitive, equilibrium can usually be achieved with small spring const (~10^-2) and large coulomb (~10^4)
 
         std::cout << "1" << std::endl;
 

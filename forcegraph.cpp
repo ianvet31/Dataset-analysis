@@ -176,7 +176,7 @@ void Forcegraph::repelNodes(double coulombConstant) {
 
       std::pair<double, double> f = {0, 0};
 
-      if (distance == 0) {
+      if (distance < 10) {
         pos[i] = {std::rand() % (width - 50) + 50, std::rand() % (height - 50) + 50};
         pos[j] = {std::rand() % (width - 50) + 50, std::rand() % (height - 50) + 50};
         continue;
@@ -246,10 +246,10 @@ void Forcegraph::node_graphics() {
      int viewcount = data.at(i);
      if (viewcount > 10000000) {
        node_params[i].first = 0.0;
-       node_params[i].second = 50.0;
+       node_params[i].second = 30.0;
      } else if (viewcount > 1000000) {
        node_params[i].first = 20.0;
-       node_params[i].second = 25.0;
+       node_params[i].second = 20.0;
      } else if (viewcount > 100000) {
        node_params[i].first = 45.0;
        node_params[i].second = 15.0;
@@ -270,36 +270,9 @@ void Forcegraph::createGraphic(Graph g) {
 
   cs225::PNG png(width, height);
 
-  for (int i = 0; i < numVertices; i++) {
-    double node_x = pos[i].first;
-    double node_y = pos[i].second;
-    
-
-    for (unsigned  j = 0; j < png.width(); j++) {
-      for (unsigned  k = 0; k < png.height(); k++) {
-
-       cs225::HSLAPixel & curpix = png.getPixel(j, k);
-
-       double radius = sqrt((node_x - j)*(node_x - j)+(node_y - k)*(node_y - k));
 
 
-       if (radius < node_params[i].second) {
-         curpix.h = node_params[i].first;
-         curpix.s = 1.0;
-         curpix.l = 0.5;
-
-       } else {
-        
-  
-       }
-       
-     }
-   }
-  }
-
-    
-
-   for (unsigned j = 0; j < numVertices; j++) {
+  for (unsigned j = 0; j < numVertices; j++) {
       for (unsigned k = j + 1; k < numVertices; k++) {
         if (g.is_connected(j, k)) {
 
@@ -361,6 +334,37 @@ void Forcegraph::createGraphic(Graph g) {
         }
       }
    }
+
+  for (int i = 0; i < numVertices; i++) {
+    double node_x = pos[i].first;
+    double node_y = pos[i].second;
+    
+
+    for (unsigned  j = 0; j < png.width(); j++) {
+      for (unsigned  k = 0; k < png.height(); k++) {
+
+       cs225::HSLAPixel & curpix = png.getPixel(j, k);
+
+       double radius = sqrt((node_x - j)*(node_x - j)+(node_y - k)*(node_y - k));
+
+
+       if (radius < node_params[i].second) {
+         curpix.h = node_params[i].first;
+         curpix.s = 1.0;
+         curpix.l = 0.5;
+
+       } else {
+        
+  
+       }
+       
+     }
+   }
+  }
+
+    
+
+   
 
   png.writeToFile("FDG_out.png");
 
