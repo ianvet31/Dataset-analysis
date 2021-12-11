@@ -10,6 +10,7 @@
 #include <fstream>
 #include <vector>
 #include <list>
+#include <queue>
 
 
 
@@ -88,22 +89,22 @@ bool Graph::is_connected(int node1, int node2){
 
 std::vector<int> Graph::BFS(int start){
   //initialize visited vector to false
-  std::vector<bool> visited(numVertices, 0);
-  std::list<int> queue;
+  std::vector<bool> visited(numVertices + 1, 0);
+  std::queue<int> q;
   std::vector<int> traversal;
   //set start as visited
   visited[start] = 1;
-  queue.push_back(start);
+  q.push(start);
 
-  while(!queue.empty()){
-    start = queue.front();
-    queue.pop_front();
-    traversal.push_back(start);
+  while(!q.empty()){
+    int s = q.front();
+    q.pop();
+    traversal.push_back(s);
 
-    for(auto it = adjacency_matrix[start].begin(); it != adjacency_matrix[start].end(); it++){
-      if(!visited[*it]){
-        visited[*it] = 1;
-        queue.push_back(*it);
+    for(int it = 0; it < numVertices + 1; it++){
+      if(!visited[it] && adjacency_matrix[s][it]){
+        visited[it] = 1;
+        q.push(it);
       }
     }
   }
@@ -113,12 +114,12 @@ std::vector<int> Graph::BFS(int start){
 void Graph::test()
 {
     std::vector<int> traversal = BFS(1);
-    for(int i = 0; i < numVertices; i++){
+    for(unsigned i = 0; i < traversal.size(); i++){
       std::cout << traversal[i] << " ";
     }
     std::cout << std::endl;
 
-    printAdjacencyMatrix(numVertices);
+    printAdjacencyMatrix(numVertices+1);
 }
 
 // Based off of https://stackoverflow.com/questions/5607589/right-way-to-split-an-stdstring-into-a-vectorstring
