@@ -272,8 +272,8 @@ void Forcegraph::createGraphic(Graph g) {
 
 
 
-  for (unsigned j = 0; j < numVertices; j++) {
-      for (unsigned k = j + 1; k < numVertices; k++) {
+  for (int j = 0; j < numVertices; j++) {
+      for (int k = j + 1; k < numVertices; k++) {
         if (g.is_connected(j, k)) {
 
             double node_1x = pos[j].first;
