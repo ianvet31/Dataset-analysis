@@ -25,7 +25,7 @@ Forcegraph::Forcegraph() {
 
 // Sets initial parameters, executes forces and creates output graphics
 
-void Forcegraph::setup(Graph graph, double springconst, double springlen, double coulombconst, double delta_time, int max_i, unsigned w, unsigned h) {   // will want to assign nodes color, size, etc.
+void Forcegraph::setup(Graph graph, double springconst, double springlen, double coulombconst, double delta_time, int max_i, unsigned w, unsigned h) {
     srand(time(NULL));
     width = w;
     height = h;
@@ -126,27 +126,27 @@ void Forcegraph::attractNodes(Graph g, double springConstant, double springRestL
 
 
       if (distance != 0) {
-        std::pair<double, double> f = {0, 0};
+        std::pair<double, double> force = {0, 0};
         double sforce = springConstant * (distance - springRestLength);    
 
-       f.first = sforce * abs(deltaX / distance);         //x component of force  (cos(theta))
-       f.second = sforce * abs(deltaY / distance);        //y component of force  (sin(theta))
+       force.first = sforce * abs(deltaX / distance);         //x component of force  (cos(theta))
+       force.second = sforce * abs(deltaY / distance);        //y component of force  (sin(theta))
     
        
        if (deltaX < 0) {                                                       
-        forces[i].first -= f.first;               
-        forces[j].first += f.first;
+        forces[i].first -= force.first;               
+        forces[j].first += force.first;
        } else {
-        forces[i].first += f.first;
-        forces[j].first -= f.first;         
+        forces[i].first += force.first;
+        forces[j].first -= force.first;         
        }
 
         if (deltaY < 0) {
-          forces[i].second -= f.second;            
-          forces[j].second += f.second;
+          forces[i].second -= force.second;            
+          forces[j].second += force.second;
         } else {
-          forces[i].second += f.second;
-          forces[j].second -= f.second;
+          forces[i].second += force.second;
+          forces[j].second -= force.second;
         }
       }
     }
@@ -167,7 +167,7 @@ void Forcegraph::repelNodes(double coulombConstant) {
       double distance = sqrt(deltaX * deltaX + deltaY * deltaY);
 
 
-      std::pair<double, double> f = {0, 0};
+      std::pair<double, double> force = {0, 0};
 
       if (distance < 10) {
         pos[i] = {std::rand() % (width - 50) + 50, std::rand() % (height - 50) + 50};
@@ -176,24 +176,24 @@ void Forcegraph::repelNodes(double coulombConstant) {
 
       } else {
        double cForce = coulombConstant / (distance * distance); 
-        f.first = cForce * abs(deltaX / distance);
-        f.second = cForce * abs(deltaY / distance);
+        force.first = cForce * abs(deltaX / distance);
+        force.second = cForce * abs(deltaY / distance);
       }
 
       if (deltaX < 0) {                                                       
-        forces[i].first += f.first;               
-        forces[j].first -= f.first;
+        forces[i].first += force.first;               
+        forces[j].first -= force.first;
       } else {
-        forces[i].first -= f.first;
-        forces[j].first += f.first;         
+        forces[i].first -= force.first;
+        forces[j].first += force.first;       
       }
 
       if (deltaY < 0) {
-        forces[i].second += f.second;            
-        forces[j].second -= f.second;
+        forces[i].second += force.second;            
+        forces[j].second -= force.second;
       } else {
-        forces[i].second -= f.second;
-        forces[j].second += f.second;
+        forces[i].second -= force.second;
+        forces[j].second += force.second;
       }
 
     }
