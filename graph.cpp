@@ -18,7 +18,6 @@ Graph::Graph(std::string datafile, std::string edgefile)
 {
     std::ifstream fileData(datafile);
     std::ifstream fileEdges(edgefile);
-
     numVertices = 0;
 
     if (fileData.is_open())
@@ -84,13 +83,16 @@ Graph::Graph(std::string datafile, std::string edgefile)
 
 
 bool Graph::is_connected(int node1, int node2){
-  return adjacency_matrix[node1][node2];
+  	//no need to check both ways since graph is undirected
+	return adjacency_matrix[node1][node2];
 }
 
 std::vector<int> Graph::BFS(int start){
   //initialize visited vector to false
   std::vector<bool> visited(numVertices + 1, 0);
+  //BFS, so use a queue
   std::queue<int> q;
+  //traversal path results
   std::vector<int> traversal;
   //set start as visited
   visited[start] = 1;
@@ -99,10 +101,12 @@ std::vector<int> Graph::BFS(int start){
   while(!q.empty()){
     int s = q.front();
     q.pop();
+    //add the front of the queue to the path
     traversal.push_back(s);
-
+    //iterate through number of vertices
     for(int it = 0; it < numVertices + 1; it++){
-      if(!visited[it] && adjacency_matrix[s][it]){
+     //only push to queue if value in adjacency matrix is true   
+     if(!visited[it] && adjacency_matrix[s][it]){
         visited[it] = 1;
         q.push(it);
       }
@@ -169,4 +173,3 @@ int Graph::get_numVertices() {
 std::map<int, int> Graph::get_data() {
     return data;
 }
-
