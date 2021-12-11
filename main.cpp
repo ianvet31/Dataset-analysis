@@ -19,13 +19,14 @@ int main() {
     bool TEST_STATE = true;
 
     if (TEST_STATE) {
+	std::cout << "Creating Graph..." << std::endl;
         Graph g = Graph("users_test_data.csv", "edges_test_data.csv");
-        // g.test();
+        
         Pagerank p = Pagerank();
         p.setupPageRank(g);
-        p.printAMatrix(g, g.amatrix.size());
-        p.printAMatrix(g, g.amatrix.size());
-        std::cout << "setup page rank" << std::endl;
+       
+        //p.printAMatrix(g, g.amatrix.size());
+        std::cout << "Setting up Page Rank..." << std::endl;
 
         Forcegraph f = Forcegraph();
 
@@ -33,7 +34,7 @@ int main() {
         unsigned int h = 900;
 
         // FDG args: graph g, spring constant, spring rest length, coulomb constant, time step (delta T), max # of iterations, width and height of output
-        
+ 	std::cout << "Setting up force-directed graph..." << std::endl;       
         f.setup(g, 0.05, 250., 10000.0, 1.0, 100, w, h);  // FDG parameters are fairly sensitive, equilibrium can usually be achieved with small spring const (~10^-2) and large coulomb (~10^4)
 
     }
