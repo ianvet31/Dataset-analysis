@@ -268,8 +268,15 @@ void Forcegraph::createGraphic(Graph g) {
 
   cs225::PNG png(width, height);
 
+<<<<<<< HEAD
   for (unsigned j = 0; j < numVertices; j++) {
       for (unsigned k = j + 1; k < numVertices; k++) {
+=======
+
+
+  for (int j = 0; j < numVertices; j++) {
+      for (int k = j + 1; k < numVertices; k++) {
+>>>>>>> a7d65be5e7309ec94b615da1f50f0b0bcc716950
         if (g.is_connected(j, k)) {
 
             double node_1x = pos[j].first;
