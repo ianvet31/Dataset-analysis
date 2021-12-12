@@ -58,5 +58,5 @@ class Forcegraph {
 
     std::vector<std::pair<double, double>> get_pos();
 
-    std::map<int, int> data get_data();
+    std::map<int, int> get_data();
 };
