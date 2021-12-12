@@ -130,8 +130,8 @@ vector<double> Pagerank::matrixmultiplication(vector<vector<double>> d2v, vector
  */
 void Pagerank::powerPageRank(Graph &graph, int iterations)
 {
+    printAmatrix(graph);
     setupPageRank(graph);
-    // printAmatrix(graph);
     randomunitvectorgenerator(graph);
 
     damping(graph, 0.85);
@@ -143,21 +143,27 @@ void Pagerank::powerPageRank(Graph &graph, int iterations)
     leaderboardSortPrint(randomunitvector);
 }
 
-// printAmatrix(Graph &graph) prints the markov matrix for provided graph
+// printAmatrix(Graph &graph) exports the amatrix for provided graph in its given state
 void Pagerank::printAmatrix(Graph &graph)
 {
-    size_t size = graph.amatrix.size();
-    cout << "[";
-    for (size_t j = 0; j < size; j++)
+    ofstream myfile;
+    myfile.open("currentamatrix.txt", ofstream::out | ofstream::trunc);
+    if (myfile.is_open())
     {
-        cout << "[";
-        for (size_t k = 0; k < size; k++)
+
+        size_t size = graph.amatrix.size();
+        myfile << "[";
+        for (size_t j = 0; j < size; j++)
         {
-            cout << graph.amatrix[j][k] << (k != size - 1 ? ", " : "");
+            myfile << "[";
+            for (size_t k = 0; k < size; k++)
+            {
+                myfile << graph.amatrix[j][k] << (k != size - 1 ? ", " : "");
+            }
+            myfile << "]" << (j != size - 1 ? ", " : "") << (j != size - 1 ? "\n" : "");
         }
-        cout << "]" << (j != size - 1 ? ", " : "") << (j != size - 1 ? "\n" : "");
+        myfile << "]" << endl;
     }
-    cout << "]" << endl;
 }
 
 // leaderboardSortPrint(vector<double> vec) sorts vector<double> into a leaderboard format for the pagerank output with ranks and pagerank weight and prints top 10
@@ -183,7 +189,7 @@ void Pagerank::leaderboardSortPrint(vector<double> vec)
         {
             myfile << (i + 1) << ")        " << leaderboard[i][0] << "       " << leaderboard[i][1] << endl;
         }
-        myfile.close()
+        myfile.close();
     }
 }
 
