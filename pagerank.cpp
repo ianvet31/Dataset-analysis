@@ -22,6 +22,7 @@ Pagerank::Pagerank()
 {
 }
 
+// setupPageRank(Graph &graph) sets up markov matrix based on adgacency matrix of graph provided
 void Pagerank::setupPageRank(Graph &graph)
 {
     size_t size = graph.amatrix.size();
@@ -53,6 +54,7 @@ void Pagerank::setupPageRank(Graph &graph)
     return;
 }
 
+// randomunitvectorgenerator(Graph &graph) generates random unit vector the same size of the columns in the markov matrix (amatrix)
 void Pagerank::randomunitvectorgenerator(Graph &graph)
 {
     int size = graph.amatrix.size();
@@ -74,6 +76,7 @@ void Pagerank::randomunitvectorgenerator(Graph &graph)
     }
 }
 
+// print1dvector(vector<double> vec) prints out a 1 dimentional vector<double> in a readable format
 void Pagerank::print1dvector(vector<double> vec)
 {
     for (size_t i = 0; i < vec.size(); i++)
@@ -83,6 +86,7 @@ void Pagerank::print1dvector(vector<double> vec)
     cout << endl << endl;
 }
 
+// damping(Graph &graph, double damping) adjusts the markov matrix based on the damping number for provided graph
 void Pagerank::damping(Graph &graph, double damping)
 {
     size_t size = graph.amatrix.size();
@@ -95,6 +99,7 @@ void Pagerank::damping(Graph &graph, double damping)
     }
 }
 
+// matrixmultiplication(vector<vector<double>> d2v, vector<double> d1v) multiplies a 2 dimentional matrix by a 1 dimentional matrix returning the resulting 1 dimentional matrix
 vector<double> Pagerank::matrixmultiplication(vector<vector<double>> d2v, vector<double> d1v)
 {
     vector<double> result;
@@ -114,6 +119,14 @@ vector<double> Pagerank::matrixmultiplication(vector<vector<double>> d2v, vector
     return result;
 }
 
+/**
+ * Complete implementation of the power iteration pagerank algorithm that uses damping to rank the users on twitch.
+ *      - Step 1) Setup markov matrix based on adgacency matrix
+ *      - Step 2) Generate random unit vector the same size as the rows in the markov matrix
+ *      - Step 3) Use damping helper to damp markov matrix based on the damping factor
+ *      - Step 4) Iterate through and multiply the matrix by the random unit vector multiple times until the pageranks weights converge to an acceptable error margin
+ *      - Step 5) Sort users by pagerank weight and print in reasonable and readable format
+ */
 void Pagerank::powerPageRank(Graph &graph, int iterations)
 {
     setupPageRank(graph);
@@ -122,11 +135,13 @@ void Pagerank::powerPageRank(Graph &graph, int iterations)
 
     damping(graph, 0.85);
     for (int i = 0; i < iterations; i++) {
+        cout << "started step " << i << " out of " << iterations << "iterations " << endl;
         randomunitvector = matrixmultiplication(graph.amatrix, randomunitvector);
     }
     leaderboardSortPrint(randomunitvector);
 }
 
+// printAmatrix(Graph &graph) prints the markov matrix for provided graph
 void Pagerank::printAmatrix(Graph &graph) {
     size_t size = graph.amatrix.size();
     cout << "[";
@@ -142,6 +157,7 @@ void Pagerank::printAmatrix(Graph &graph) {
     cout << "]" << endl;
 }
 
+// leaderboardSortPrint(vector<double> vec) sorts vector<double> into a leaderboard format for the pagerank output with ranks and pagerank weight
 void Pagerank::leaderboardSortPrint(vector<double> vec) {
     vector<vector<double>> leaderboard;
     int s = vec.size();
@@ -159,10 +175,12 @@ void Pagerank::leaderboardSortPrint(vector<double> vec) {
     }
 }
 
+// sortHelper(const vector<double>& v1, const vector<double>& v2) used to help sort the leaderboard vector into a readable and useful format
 bool Pagerank::sortHelper(const vector<double>& v1, const vector<double>& v2) {
     return v1[1] > v2[1];
 }
 
+// Pagerank::getRandomUnitVector() getter for randomunitvector so it can be accessed publicly
 vector<double> Pagerank::getRandomUnitVector() {
     return randomunitvector;
 }

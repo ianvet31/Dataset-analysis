@@ -9,6 +9,9 @@
 #include <map>
 #include "graph.h"
 
+/**
+ * Pagerank algorithm based on power iteration and damping.
+ */
 using namespace std;
 class Pagerank {
     public:
