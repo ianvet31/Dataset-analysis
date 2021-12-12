@@ -19,15 +19,13 @@ using cs225::HSLAPixel;
 
 
 
-//todo - more setup, fix force functions, add equilibrium check, add graphics
-
-
-// update positions over some delta_time for iterations, equil check each time
 Forcegraph::Forcegraph() {
 
 }
 
-void Forcegraph::setup(Graph graph, double springconst, double springlen, double coulombconst, double delta_time, int max_i, unsigned w, unsigned h) {   // will want to assign nodes color, size, etc.
+// Sets initial parameters, executes forces and creates output graphics
+
+void Forcegraph::setup(Graph graph, double springconst, double springlen, double coulombconst, double delta_time, int max_i, unsigned w, unsigned h) {
     srand(time(NULL));
     width = w;
     height = h;
@@ -39,26 +37,10 @@ void Forcegraph::setup(Graph graph, double springconst, double springlen, double
     forces.resize(numVertices, {0, 0});
 
     assign_Positions();
-
-
-   // std::cout << pos[1].first << std::endl;
-   // std::cout << pos[1].second << std::endl;
-
-    //std::cout << pos[2].first << std::endl;
-    //std::cout << pos[2].second << std::endl;
-
-   // std::cout << pos[3].first << std::endl;
-    //std::cout << pos[3].second << std::endl;
-
-
-
-
-
   
     applyForces(graph, springconst, springlen, coulombconst, delta_time, max_i);
 
  
-
     std::cout << "done setup" << std::endl;
 
 
@@ -71,6 +53,9 @@ void Forcegraph::setup(Graph graph, double springconst, double springlen, double
 
     return;
 }
+
+// Applies spring and coulomb forces for each iteration, checks if equilibrium has been reached each time
+// Stops at some max_iter if equilibrium is still not reached
 
 void Forcegraph::applyForces(Graph g, double springconst, double springlen, double coulombconst, double delta_time, int max_iter) {
   for (int i = 0; i < max_iter; i++) {
@@ -87,7 +72,9 @@ void Forcegraph::applyForces(Graph g, double springconst, double springlen, doub
   }
 }
 
-bool Forcegraph::equilibrium_check() {        // confirms that x and y components of force are zero for each node
+// Equilibrium check is run at the end of each iteration, checks if the forces of each node is minimized (approx. zero)
+
+bool Forcegraph::equilibrium_check() { 
 
   for (int i = 0; i < numVertices; i++) {
     if (!(abs(forces[i].first) < 1) || !(abs(forces[i].second) < 1)) {
@@ -99,7 +86,7 @@ bool Forcegraph::equilibrium_check() {        // confirms that x and y component
 }
 
 
-// Assigns completely random positions for nodes, maybe change later
+// Assigns completely random positions for nodes
 
 
 void Forcegraph::assign_Positions() {
@@ -109,9 +96,11 @@ void Forcegraph::assign_Positions() {
     }
 
 }
-// std::rand() % width
 
-// maybe change force functions to loop through all nodes, not two at a time..
+// Spring force function
+// Loops through every pair of nodes, checks if they're connected
+// The appliced force can be attractive or repulsive based on the spring rest length
+// Force is linear with distance between nodes as F = k*d
  
 void Forcegraph::attractNodes(Graph g, double springConstant, double springRestLength) {
   //use Hooke's Law
@@ -137,34 +126,38 @@ void Forcegraph::attractNodes(Graph g, double springConstant, double springRestL
 
 
       if (distance != 0) {
-        std::pair<double, double> f = {0, 0};
-        double sforce = springConstant * (distance - springRestLength);    // spring force is linear with seperation (F = k*d)
+        std::pair<double, double> force = {0, 0};
+        double sforce = springConstant * (distance - springRestLength);    
 
-       f.first = sforce * abs(deltaX / distance);         //x component of force  (cos(theta))
-       f.second = sforce * abs(deltaY / distance);        //y component of force  (sin(theta))
+       force.first = sforce * abs(deltaX / distance);         //x component of force  (cos(theta))
+       force.second = sforce * abs(deltaY / distance);        //y component of force  (sin(theta))
     
        
        if (deltaX < 0) {                                                       
-        forces[i].first -= f.first;               
-        forces[j].first += f.first;
+        forces[i].first -= force.first;               
+        forces[j].first += force.first;
        } else {
-        forces[i].first += f.first;
-        forces[j].first -= f.first;         
+        forces[i].first += force.first;
+        forces[j].first -= force.first;         
        }
 
         if (deltaY < 0) {
-          forces[i].second -= f.second;            
-          forces[j].second += f.second;
+          forces[i].second -= force.second;            
+          forces[j].second += force.second;
         } else {
-          forces[i].second += f.second;
-          forces[j].second -= f.second;
+          forces[i].second += force.second;
+          forces[j].second -= force.second;
         }
       }
     }
   }
 }
+
+
+// Repulsive force function, uses Couloumb's law for charged particles (F = c / d^2)
+// Doesn't care about edges, each node is repulsed from every other node
+
 void Forcegraph::repelNodes(double coulombConstant) {
-  //use Coulomb's Law
   for (int i = 0; i < numVertices; i++) {
     for (int j = i + 1; j < numVertices; j++) {
 
@@ -174,7 +167,7 @@ void Forcegraph::repelNodes(double coulombConstant) {
       double distance = sqrt(deltaX * deltaX + deltaY * deltaY);
 
 
-      std::pair<double, double> f = {0, 0};
+      std::pair<double, double> force = {0, 0};
 
       if (distance < 10) {
         pos[i] = {std::rand() % (width - 50) + 50, std::rand() % (height - 50) + 50};
@@ -182,25 +175,25 @@ void Forcegraph::repelNodes(double coulombConstant) {
         continue;
 
       } else {
-       double cForce = coulombConstant / (distance * distance);      // coulomb constant could depend on actual data? force is currently just based on distance between vertices
-        f.first = cForce * abs(deltaX / distance);
-        f.second = cForce * abs(deltaY / distance);
+       double cForce = coulombConstant / (distance * distance); 
+        force.first = cForce * abs(deltaX / distance);
+        force.second = cForce * abs(deltaY / distance);
       }
 
       if (deltaX < 0) {                                                       
-        forces[i].first += f.first;               
-        forces[j].first -= f.first;
+        forces[i].first += force.first;               
+        forces[j].first -= force.first;
       } else {
-        forces[i].first -= f.first;
-        forces[j].first += f.first;         
+        forces[i].first -= force.first;
+        forces[j].first += force.first;       
       }
 
       if (deltaY < 0) {
-        forces[i].second += f.second;            
-        forces[j].second -= f.second;
+        forces[i].second += force.second;            
+        forces[j].second -= force.second;
       } else {
-        forces[i].second -= f.second;
-        forces[j].second += f.second;
+        forces[i].second -= force.second;
+        forces[j].second += force.second;
       }
 
     }
@@ -209,6 +202,9 @@ void Forcegraph::repelNodes(double coulombConstant) {
   
 }
 
+// Updates the positions of nodes based on their x and y force values and a time step deltaT
+// If the force is pushing the node out of range for the PNG, it hits a wall and cannot be pushed further
+
 void Forcegraph::updatePositions(double deltaT) {
 
   for (int i = 0; i < numVertices; i++) {
@@ -216,27 +212,26 @@ void Forcegraph::updatePositions(double deltaT) {
     double deltaX = deltaT * forces[i].first;
     double deltaY = deltaT * forces[i].second;
 
-    std::cout << forces[i].first << std::endl;
-    std::cout << forces[i].second << std::endl;
-
-    if (((pos[i].first + deltaX) < 750) && ((pos[i].first + deltaX) > 50)) {
+    if (((pos[i].first + deltaX) < (width - 50)) && ((pos[i].first + deltaX) > 50)) {
       pos[i].first += deltaX;     
     } else if (deltaX > 0) {
-      pos[i].first = 749;
+      pos[i].first = width - 51;
     } else {
       pos[i].first = 51;
     }
-    if (((pos[i].second + deltaY) < 550) && ((pos[i].second + deltaY) > 50)) {
+    if (((pos[i].second + deltaY) < (height - 50)) && ((pos[i].second + deltaY) > 50)) {
       pos[i].second += deltaY;    
     } else if (deltaY > 0) {
-      pos[i].second = 549;
+      pos[i].second = height - 51;
     } else {
       pos[i].second = 51;
     }
   }
 }
 
-
+// Assigns parameters based on a streamer's view count
+// First parameter: hue of node (higher viewcounts are red, lower viewcounts are blue)
+// Second parameter: radius of node (node circle graphic, size scaled with viewcount)
 
 void Forcegraph::node_graphics() {
 
@@ -265,8 +260,11 @@ void Forcegraph::node_graphics() {
 
 }
 
-void Forcegraph::createGraphic(Graph g) {
+// Creates an output PNG using the cs225 PNG and HSLAPixel classes
+// First draws edges between all connected nodes
+// Next draws nodes from end positions after forces have been applied, graphics based on node parameters
 
+void Forcegraph::createGraphic(Graph g) {
 
   cs225::PNG png(width, height);
 
@@ -291,19 +289,13 @@ void Forcegraph::createGraphic(Graph g) {
             unsigned end_y = 0;
             double slope = 0;
 
-
-            
-
-
             if (dX > 0) {
               start_x = (unsigned int) node_1x;
               start_y = (unsigned int) node_1y;
               end_x = (unsigned int) node_2x;
               end_y = (unsigned int) node_2y;
               slope = dY / dX;
-              
-
-
+        
             } 
             if (dX < 0) {
               start_x = (unsigned int) node_2x;
@@ -311,26 +303,19 @@ void Forcegraph::createGraphic(Graph g) {
               end_x = (unsigned int) node_1x;
               end_y = (unsigned int) node_1y;
               slope = dY / dX;
-              
             }
             
-      
             double y = start_y;
             for (unsigned x = start_x; x < end_x; x++) {
               cs225::HSLAPixel & curpix = png.getPixel(x, (unsigned) y);
               curpix.h = 0.0;
               curpix.s = 1.0;
               curpix.l = 0.0;
-
               y += slope;
-
-                 
             }
 
 
             
-        } else {
-
         }
       }
    }
@@ -344,9 +329,7 @@ void Forcegraph::createGraphic(Graph g) {
       for (unsigned  k = 0; k < png.height(); k++) {
 
        cs225::HSLAPixel & curpix = png.getPixel(j, k);
-
        double radius = sqrt((node_x - j)*(node_x - j)+(node_y - k)*(node_y - k));
-
 
        if (radius < node_params[i].second) {
          curpix.h = node_params[i].first;
@@ -354,23 +337,13 @@ void Forcegraph::createGraphic(Graph g) {
          curpix.l = 0.5;
 
        } else {
-        
-  
+         continue;
        }
        
      }
    }
   }
-
-    
-
-   
-
   png.writeToFile("FDG_out.png");
-
-
-
-
 }
 
 
