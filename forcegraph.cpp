@@ -328,7 +328,7 @@ void Forcegraph::createGraphic(Graph g) {
 std::vector<std::pair<double, double>> Forcegraph::get_pos() {
   return pos;
 }
-std::map<int, int> data Forcegraph::get_data() {
+std::map<int, int> Forcegraph::get_data() {
   return data;
 }
 
