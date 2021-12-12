@@ -40,7 +40,7 @@ void Pagerank::setupPageRank(Graph &graph)
         {
             for (size_t j = 0; j < size; j++)
             {
-                    graph.amatrix[j][i] = double(1) / double(size);
+                graph.amatrix[j][i] = double(1) / double(size);
             }
         }
         else
@@ -83,7 +83,8 @@ void Pagerank::print1dvector(vector<double> vec)
     {
         cout << vec[i] << "    ";
     }
-    cout << endl << endl;
+    cout << endl
+         << endl;
 }
 
 // damping(Graph &graph, double damping) adjusts the markov matrix based on the damping number for provided graph
@@ -134,7 +135,8 @@ void Pagerank::powerPageRank(Graph &graph, int iterations)
     randomunitvectorgenerator(graph);
 
     damping(graph, 0.85);
-    for (int i = 0; i < iterations; i++) {
+    for (int i = 0; i < iterations; i++)
+    {
         cout << "started step " << i << " out of " << iterations << "iterations " << endl;
         randomunitvector = matrixmultiplication(graph.amatrix, randomunitvector);
     }
@@ -142,7 +144,8 @@ void Pagerank::powerPageRank(Graph &graph, int iterations)
 }
 
 // printAmatrix(Graph &graph) prints the markov matrix for provided graph
-void Pagerank::printAmatrix(Graph &graph) {
+void Pagerank::printAmatrix(Graph &graph)
+{
     size_t size = graph.amatrix.size();
     cout << "[";
     for (size_t j = 0; j < size; j++)
@@ -157,30 +160,41 @@ void Pagerank::printAmatrix(Graph &graph) {
     cout << "]" << endl;
 }
 
-// leaderboardSortPrint(vector<double> vec) sorts vector<double> into a leaderboard format for the pagerank output with ranks and pagerank weight
-void Pagerank::leaderboardSortPrint(vector<double> vec) {
-    vector<vector<double>> leaderboard;
-    int s = vec.size();
-    leaderboard.resize(s, vector<double>(2));
-    for (int i = 0; i < s; i++) {
+// leaderboardSortPrint(vector<double> vec) sorts vector<double> into a leaderboard format for the pagerank output with ranks and pagerank weight and prints top 10
+void Pagerank::leaderboardSortPrint(vector<double> vec)
+{
+    ofsteam myfile;
+    myfile.open("pagerank_leaderboard.txt", ofstream::out | ofstream::trunc);
+    if (myfile.is_open())
+    {
+        vector<vector<double>> leaderboard;
+        int s = vec.size();
+        leaderboard.resize(s, vector<double>(2));
+        for (int i = 0; i < s; i++)
+        {
             leaderboard[i][0] = i;
             leaderboard[i][1] = randomunitvector[i];
-    }
+        }
 
-    sort(leaderboard.begin(), leaderboard.end(), sortHelper);
+        sort(leaderboard.begin(), leaderboard.end(), sortHelper);
 
-    cout << "Rank  |   User  |   Pagerank Weight" << endl;
-    for (size_t i = 0; i < leaderboard.size(); i++) {
-        cout << (i+1) << ")        " << leaderboard[i][0] << "       " << leaderboard[i][1] << endl;
+        myfile << "Rank  |   User  |   Pagerank Weight" << endl;
+        for (size_t i = 0; i < leaderboard.size(); i++)
+        {
+            myfile << (i + 1) << ")        " << leaderboard[i][0] << "       " << leaderboard[i][1] << endl;
+        }
+        myfile.close()
     }
 }
 
 // sortHelper(const vector<double>& v1, const vector<double>& v2) used to help sort the leaderboard vector into a readable and useful format
-bool Pagerank::sortHelper(const vector<double>& v1, const vector<double>& v2) {
+bool Pagerank::sortHelper(const vector<double> &v1, const vector<double> &v2)
+{
     return v1[1] > v2[1];
 }
 
 // Pagerank::getRandomUnitVector() getter for randomunitvector so it can be accessed publicly
-vector<double> Pagerank::getRandomUnitVector() {
+vector<double> Pagerank::getRandomUnitVector()
+{
     return randomunitvector;
 }
