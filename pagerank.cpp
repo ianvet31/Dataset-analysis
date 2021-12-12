@@ -163,7 +163,7 @@ void Pagerank::printAmatrix(Graph &graph)
 // leaderboardSortPrint(vector<double> vec) sorts vector<double> into a leaderboard format for the pagerank output with ranks and pagerank weight and prints top 10
 void Pagerank::leaderboardSortPrint(vector<double> vec)
 {
-    ofsteam myfile;
+    ofstream myfile;
     myfile.open("pagerank_leaderboard.txt", ofstream::out | ofstream::trunc);
     if (myfile.is_open())
     {

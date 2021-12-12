@@ -325,10 +325,10 @@ void Forcegraph::createGraphic(Graph g) {
   png.writeToFile("FDG_out.png");
 }
 
-std::vector<std::pair<double, double>> get_pos() {
+std::vector<std::pair<double, double>> Forcegraph::get_pos() {
   return pos;
 }
-std::map<int, int> data get_data() {
+std::map<int, int> data Forcegraph::get_data() {
   return data;
 }
 
