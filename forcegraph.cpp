@@ -45,6 +45,7 @@ void Forcegraph::setup(Graph graph, double springconst, double springlen, double
 
 
     node_graphics();
+    createGraphic(graph);
 
     return;
 }
@@ -223,19 +224,19 @@ void Forcegraph::node_graphics() {
      int viewcount = data.at(i);
      if (viewcount > 10000000) {
        node_params[i].first = 0.0;
-       node_params[i].second = 30.0;
+       node_params[i].second = 20.0;
      } else if (viewcount > 1000000) {
        node_params[i].first = 20.0;
-       node_params[i].second = 20.0;
+       node_params[i].second = 10.0;
      } else if (viewcount > 100000) {
        node_params[i].first = 45.0;
-       node_params[i].second = 15.0;
+       node_params[i].second = 7.0;
      } else if (viewcount > 1000) {
        node_params[i].first = 65.0;
-       node_params[i].second = 10.0;
+       node_params[i].second = 4.0;
      } else {
        node_params[i].first = 90.0;
-       node_params[i].second = 5.0;
+       node_params[i].second = 2.0;
      }
    }
    
