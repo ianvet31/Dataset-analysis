@@ -38,7 +38,7 @@ int main() {
 
         // FDG args: graph g, spring constant, spring rest length, coulomb constant, time step (delta T), max # of iterations, width and height of output
  	std::cout << "Setting up force-directed graph..." << std::endl;       
-        f.setup(g, 0.05, 250., 10000.0, 1.0, 100, w, h);  // FDG parameters are fairly sensitive, equilibrium can usually be achieved with small spring const (~10^-2) and large coulomb (~10^4)
+        f.setup(g, 5, 100., 100., 0.001, 1000, w, h);  // FDG parameters are fairly sensitive, equilibrium can usually be achieved with small spring const (~10^-2) and large coulomb (~10^4)
 
     }
    
