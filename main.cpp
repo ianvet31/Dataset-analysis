@@ -20,7 +20,7 @@ int main() {
     bool TEST_STATE = true;
     
     if (DEMO_PAGERANK_STATE_) {
-        Graph g = Graph("large_twitch_features.csv", "large_twitch_edged.csv");
+        Graph g = Graph("large_twitch_features.csv", "large_twitch_edges.csv");
         Pagerank p = Pagerank();
         p.powerPageRank(g, 10);
     }
