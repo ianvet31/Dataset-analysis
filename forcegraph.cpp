@@ -17,8 +17,6 @@ using cs225::PNG;
 #include "cs225/HSLAPixel.h"
 using cs225::HSLAPixel;
 
-#include <mutex>
-
 
 
 Forcegraph::Forcegraph() {
@@ -47,11 +45,6 @@ void Forcegraph::setup(Graph graph, double springconst, double springlen, double
 
 
     node_graphics();
-    createGraphic(graph);
-
-
-
-
 
     return;
 }
@@ -140,23 +133,6 @@ void Forcegraph::attractNodes(Graph g, double springConstant, double springRestL
       forces[j].first -= force.first;               
       forces[j].second -= force.second;
        
-       /*
-       if (deltaX < 0) {                                                       
-        forces[i].first -= force.first;               
-        forces[j].first += force.first;
-       } else {
-        forces[i].first += force.first;
-        forces[j].first -= force.first;         
-       }
-
-        if (deltaY < 0) {
-          forces[i].second -= force.second;            
-          forces[j].second += force.second;
-        } else {
-          forces[i].second += force.second;
-          forces[j].second -= force.second;
-        }
-        */
       }
     }
   }
@@ -193,24 +169,6 @@ void Forcegraph::repelNodes(double coulombConstant) {
       forces[i].second += force.second;
       forces[j].first -= force.first;               
       forces[j].second -= force.second;
-
-      /*
-      if (deltaX < 0) {                                                       
-        forces[i].first += force.first;               
-        forces[j].first -= force.first;
-      } else {
-        forces[i].first -= force.first;
-        forces[j].first += force.first;       
-      }
-
-      if (deltaY < 0) {
-        forces[i].second += force.second;            
-        forces[j].second -= force.second;
-      } else {
-        forces[i].second -= force.second;
-        forces[j].second += force.second;
-      }
-      */
 
     }
   }
@@ -291,9 +249,6 @@ void Forcegraph::node_graphics() {
 void Forcegraph::createGraphic(Graph g) {
 
   cs225::PNG png(width, height);
-
-
-
   for (int j = 0; j < numVertices; j++) {
       for (int k = j + 1; k < numVertices; k++) {
         if (g.is_connected(j, k)) {
@@ -368,6 +323,13 @@ void Forcegraph::createGraphic(Graph g) {
    }
   }
   png.writeToFile("FDG_out.png");
+}
+
+std::vector<std::pair<double, double>> get_pos() {
+  return pos;
+}
+std::map<int, int> data get_data() {
+  return data;
 }
 
 
