@@ -66,7 +66,7 @@ void Pagerank::randomunitvectorgenerator(Graph &graph)
     double total = 0;
     for (auto i = 0; i < size; i++)
     {
-        random = rand() % 10000 + 1;
+        random = rand() % size + 1;
         randomunitvector[i] = random;
         total += random;
     }
@@ -137,7 +137,7 @@ void Pagerank::powerPageRank(Graph &graph, int iterations)
     damping(graph, 0.85);
     for (int i = 0; i < iterations; i++)
     {
-        cout << "started step " << i << " out of " << iterations << "iterations " << endl;
+        cout << "started step " << i+1 << " out of " << iterations << " iterations " << endl;
         randomunitvector = matrixmultiplication(graph.amatrix, randomunitvector);
     }
     leaderboardSortPrint(randomunitvector);
