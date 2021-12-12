@@ -20,9 +20,9 @@ int main() {
     bool TEST_STATE = true;
     
     if (DEMO_PAGERANK_STATE_) {
-        Graph g = Graph("users_test_data.csv", "edges_test_data.csv");
+        Graph g = Graph("large_twitch_features.csv", "large_twitch_edged.csv");
         Pagerank p = Pagerank();
-        p.powerPageRank(g, 100);
+        p.powerPageRank(g, 10);
     }
     if (TEST_STATE) {
 	std::cout << "Creating Graph..." << std::endl;
