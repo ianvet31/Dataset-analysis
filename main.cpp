@@ -16,27 +16,12 @@ int main() {
         // outputVisual()
         // output most probable user()
 
-    bool TEST_STATE = true;
+    bool DEMO_PAGERANK_STATE_ = true;
 
-    if (TEST_STATE) {
+    if (DEMO_PAGERANK_STATE_) {
         Graph g = Graph("users_test_data.csv", "edges_test_data.csv");
-        // g.test();
         Pagerank p = Pagerank();
-        p.setupPageRank(g);
-        p.printAMatrix(g, g.amatrix.size());
-        p.printAMatrix(g, g.amatrix.size());
-        std::cout << "setup page rank" << std::endl;
-
-        Forcegraph f = Forcegraph();
-
-        unsigned int w = 800;
-        unsigned int h = 600;
-
-        // FDG args: graph g, spring constant, spring rest length, coulomb constant, time step (delta T), max # of iterations, width and height of output
-        
-        f.setup(g, 0.05, 250., 10000.0, 1.0, 100, w, h);  // FDG parameters are fairly sensitive, equilibrium can usually be achieved with small spring const (~10^-2) and large coulomb (~10^4)
-
-        std::cout << "1" << std::endl;
+        p.powerPageRank(g, 100);
 
     }
    
