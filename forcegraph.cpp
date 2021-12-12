@@ -17,6 +17,8 @@ using cs225::PNG;
 #include "cs225/HSLAPixel.h"
 using cs225::HSLAPixel;
 
+#include <mutex>
+
 
 
 Forcegraph::Forcegraph() {
@@ -92,7 +94,7 @@ bool Forcegraph::equilibrium_check() {
 void Forcegraph::assign_Positions() {
 
     for (int i = 0; i < numVertices; i++) {
-      pos[i] = {std::rand() % (width - 50) + 50, std::rand() % (height - 50) + 50}; 
+      pos[i] = {std::rand() % (width - 400) + 400, std::rand() % (height - 300) + 300}; 
     }
 
 }
@@ -129,10 +131,16 @@ void Forcegraph::attractNodes(Graph g, double springConstant, double springRestL
         std::pair<double, double> force = {0, 0};
         double sforce = springConstant * (distance - springRestLength);    
 
-       force.first = sforce * abs(deltaX / distance);         //x component of force  (cos(theta))
-       force.second = sforce * abs(deltaY / distance);        //y component of force  (sin(theta))
+       force.first = sforce * (deltaX / distance);         //x component of force  (cos(theta))
+       force.second = sforce * (deltaY / distance);        //y component of force  (sin(theta))
     
+
+      forces[i].first += force.first;               
+      forces[i].second += force.second;
+      forces[j].first -= force.first;               
+      forces[j].second -= force.second;
        
+       /*
        if (deltaX < 0) {                                                       
         forces[i].first -= force.first;               
         forces[j].first += force.first;
@@ -148,6 +156,7 @@ void Forcegraph::attractNodes(Graph g, double springConstant, double springRestL
           forces[i].second += force.second;
           forces[j].second -= force.second;
         }
+        */
       }
     }
   }
@@ -169,17 +178,23 @@ void Forcegraph::repelNodes(double coulombConstant) {
 
       std::pair<double, double> force = {0, 0};
 
-      if (distance < 10) {
+      if (distance < 50) {
         pos[i] = {std::rand() % (width - 50) + 50, std::rand() % (height - 50) + 50};
-        pos[j] = {std::rand() % (width - 50) + 50, std::rand() % (height - 50) + 50};
+        pos[j] = {std::rand() % (height - 50) + 50, std::rand() % (height - 50) + 50};
         continue;
 
       } else {
        double cForce = coulombConstant / (distance * distance); 
-        force.first = cForce * abs(deltaX / distance);
-        force.second = cForce * abs(deltaY / distance);
+        force.first = cForce * (deltaX / distance);
+        force.second = cForce * (deltaY / distance);
       }
 
+      forces[i].first += force.first;               
+      forces[i].second += force.second;
+      forces[j].first -= force.first;               
+      forces[j].second -= force.second;
+
+      /*
       if (deltaX < 0) {                                                       
         forces[i].first += force.first;               
         forces[j].first -= force.first;
@@ -195,6 +210,7 @@ void Forcegraph::repelNodes(double coulombConstant) {
         forces[i].second -= force.second;
         forces[j].second += force.second;
       }
+      */
 
     }
   }
@@ -207,24 +223,32 @@ void Forcegraph::repelNodes(double coulombConstant) {
 
 void Forcegraph::updatePositions(double deltaT) {
 
+  double max_move = 10;
+
   for (int i = 0; i < numVertices; i++) {
 
     double deltaX = deltaT * forces[i].first;
     double deltaY = deltaT * forces[i].second;
 
+    double dist = sqrt(deltaX * deltaX + deltaY * deltaY);
+
+    if (dist > max_move) {
+      deltaX *= (max_move / dist);
+      deltaY *= (max_move / dist);
+
+    }
+
+
+
     if (((pos[i].first + deltaX) < (width - 50)) && ((pos[i].first + deltaX) > 50)) {
       pos[i].first += deltaX;     
-    } else if (deltaX > 0) {
-      pos[i].first = width - 51;
     } else {
-      pos[i].first = 51;
+      pos[i].first = rand() % (width - 400) + 400;
     }
     if (((pos[i].second + deltaY) < (height - 50)) && ((pos[i].second + deltaY) > 50)) {
       pos[i].second += deltaY;    
-    } else if (deltaY > 0) {
-      pos[i].second = height - 51;
     } else {
-      pos[i].second = 51;
+      pos[i].second = rand() % (height - 300) + 300;
     }
   }
 }
