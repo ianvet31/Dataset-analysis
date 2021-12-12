@@ -17,7 +17,7 @@ int main() {
         // output most probable user()
 
     bool DEMO_PAGERANK_STATE_ = true;
-    bool TEST_STATE = false;
+    bool TEST_STATE = true;
     
     if (DEMO_PAGERANK_STATE_) {
         Graph g = Graph("users_test_data.csv", "edges_test_data.csv");
@@ -28,8 +28,8 @@ int main() {
 	std::cout << "Creating Graph..." << std::endl;
         Graph g = Graph("users_test_data.csv", "edges_test_data.csv");
 
-        //p.printAMatrix(g, g.amatrix.size());
-        std::cout << "Setting up Page Rank..." << std::endl;
+        
+        
 
         Forcegraph f = Forcegraph();
 
