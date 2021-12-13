@@ -47,6 +47,8 @@ void Forcegraph::setup(Graph graph, double springconst, double springlen, double
     node_graphics();
     createGraphic(graph);
 
+    std::cout << "done output" << std::endl;
+
     return;
 }
 
@@ -82,13 +84,13 @@ bool Forcegraph::equilibrium_check() {
 }
 
 
-// Assigns completely random positions for nodes
+// Assigns completely random, somewhat centered positions for nodes to start
 
 
 void Forcegraph::assign_Positions() {
 
     for (int i = 0; i < numVertices; i++) {
-      pos[i] = {std::rand() % (width - 400) + 400, std::rand() % (height - 300) + 300}; 
+      pos[i] = {std::rand() % (width - 400) + 400, std::rand() % (height - 400) + 400}; 
     }
 
 }
@@ -156,8 +158,8 @@ void Forcegraph::repelNodes(double coulombConstant) {
       std::pair<double, double> force = {0, 0};
 
       if (distance < 50) {
-        pos[i] = {std::rand() % (width - 50) + 50, std::rand() % (height - 50) + 50};
-        pos[j] = {std::rand() % (height - 50) + 50, std::rand() % (height - 50) + 50};
+        force.first = std::rand() % 200000 + 100000;
+        force.second = std::rand() % 200000 + 100000;
         continue;
 
       } else {
@@ -166,10 +168,11 @@ void Forcegraph::repelNodes(double coulombConstant) {
         force.second = cForce * (deltaY / distance);
       }
 
-      forces[i].first += force.first;               
-      forces[i].second += force.second;
-      forces[j].first -= force.first;               
-      forces[j].second -= force.second;
+      forces[i].first -= force.first;               
+      forces[i].second -= force.second;
+      forces[j].first += force.first;               
+      forces[j].second += force.second;
+
 
     }
   }
@@ -198,16 +201,23 @@ void Forcegraph::updatePositions(double deltaT) {
     }
 
 
-
-    if (((pos[i].first + deltaX) < (width - 50)) && ((pos[i].first + deltaX) > 50)) {
+  if (((pos[i].first + deltaX) < (width - 50)) && ((pos[i].first + deltaX) > 50)) {
       pos[i].first += deltaX;     
-    } else {
-      pos[i].first = rand() % (width - 400) + 400;
+  } else {
+      if (deltaX < 0) {
+        pos[i].first = rand() % (width / 4) + 50;
+      } else {
+        pos[i].first = rand() % (width / 4) + (3*width / 4) - 50;
+      }
     }
-    if (((pos[i].second + deltaY) < (height - 50)) && ((pos[i].second + deltaY) > 50)) {
-      pos[i].second += deltaY;    
-    } else {
-      pos[i].second = rand() % (height - 300) + 300;
+  if (((pos[i].second + deltaY) < (height - 50)) && ((pos[i].second + deltaY) > 50)) {
+    pos[i].second += deltaY;    
+  } else {
+      if (deltaY < 0) {
+        pos[i].second = rand() % (height / 4) + 50;
+      } else {
+        pos[i].second = rand() % (height / 4) + (3*height / 4) - 50;
+      }
     }
   }
 }
@@ -224,19 +234,19 @@ void Forcegraph::node_graphics() {
      int viewcount = data.at(i);
      if (viewcount > 10000000) {
        node_params[i].first = 0.0;
-       node_params[i].second = 20.0;
+       node_params[i].second = 25.0;
      } else if (viewcount > 1000000) {
        node_params[i].first = 20.0;
-       node_params[i].second = 10.0;
+       node_params[i].second = 15.0;
      } else if (viewcount > 100000) {
        node_params[i].first = 45.0;
-       node_params[i].second = 7.0;
+       node_params[i].second = 10.0;
      } else if (viewcount > 1000) {
        node_params[i].first = 65.0;
-       node_params[i].second = 4.0;
+       node_params[i].second = 7.0;
      } else {
        node_params[i].first = 90.0;
-       node_params[i].second = 2.0;
+       node_params[i].second = 4.0;
      }
    }
    
@@ -250,6 +260,9 @@ void Forcegraph::node_graphics() {
 void Forcegraph::createGraphic(Graph g) {
 
   cs225::PNG png(width, height);
+
+
+
   for (int j = 0; j < numVertices; j++) {
       for (int k = j + 1; k < numVertices; k++) {
         if (g.is_connected(j, k)) {
@@ -324,13 +337,6 @@ void Forcegraph::createGraphic(Graph g) {
    }
   }
   png.writeToFile("FDG_out.png");
-}
-
-std::vector<std::pair<double, double>> Forcegraph::get_pos() {
-  return pos;
-}
-std::map<int, int> Forcegraph::get_data() {
-  return data;
 }
 
 
