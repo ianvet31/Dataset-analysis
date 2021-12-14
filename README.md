@@ -42,12 +42,18 @@ The adjacency matrix for the graph is outputted to currentamatrix.txt
 The pagerank leaderboard with sorted weights assigned to users is outputted to pagerank_leaderboard.txt.
  
  
- #FORCE DIRECTED GRAPH USAGE#
-        Graph g = Graph("{USERS DATA}.csv", "{EDGES DATA}.csv"); // modify {} appropriately, note that data with > 1000 nodes will run slowly
-        Forcegraph f = Forcegraph(); // empty constructor
-        f.setup(g, double spring_constant, double spring_rest_length, double coulomb_constant, double delta_t, int max_iterations, unsigned width, unsigned height); // sets up and runs force graph algorithm
-        The forcegraph output can be fairly sensitive to its setup parameters. For the majority of our testing, we used a 1600x1600 square PNG canvas and found the best results with the following parameters: spring_constant = 5.0, spring_rest_length = 100.0, coulomb_constant = 20000.0, delta_t = 0.0001, max_iterations = 1000
-        Running the setup function with full parameters will run the full algorithm and save the output PNG to the location "FDG_output.png"
+ #### FORCE DIRECTED GRAPH USAGE
+ Modify the information between the brackets to use different data files, but note that large data files (>1000 nodes) may run slowly.
+ `Graph g = Graph("{USERS DATA}.csv", "{EDGES DATA}.csv");`
+ 
+ Run the constructor and setup functions as follows:
+ 
+ `Forcegraph f = Forcegraph(); // empty constructor
+  f.setup(g, double spring_constant, double spring_rest_length, double coulomb_constant, double delta_t, int max_iterations, unsigned width, unsigned height);`
+  
+The forcegraph output can be fairly sensitive to its setup parameters. For the majority of our testing, we used a 1600x1600 square PNG canvas and found the best results with the following parameters: spring_constant = 5.0, spring_rest_length = 100.0, coulomb_constant = 20000.0, delta_t = 0.0001, max_iterations = 1000
+ 
+Running the setup function with full parameters will run the full algorithm and save the output PNG to the location "FDG_output.png"
 
 ## Tests
 ### Pagerank Tests
