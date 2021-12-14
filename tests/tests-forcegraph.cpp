@@ -3,6 +3,8 @@
 #include <iostream>
 #include <cstdlib>
 
+using namespace cs225;
+
 
 
 TEST_CASE("Graph check", "[weight=5][timeout=8000]")
@@ -12,7 +14,7 @@ TEST_CASE("Graph check", "[weight=5][timeout=8000]")
     Forcegraph f = Forcegraph();
     f.setup(g, (double) (rand() % 5 + 1), (double) (rand() % 200), (double) (rand() % 100), 0.001, 1000, 1600, 900);
     std::map<int, int> graph_data = g.get_data();
-    std::map<int, int> fdg_data = f.get_data();
+    std::map<int, int> fdg_data = g.get_data();
 
     int graph_vertices = g.get_numVertices();
     int fdg_vertices = g.get_numVertices();
@@ -51,5 +53,15 @@ TEST_CASE("Positions valid check", "[weight=5][timeout=8000]")
         }
     }
     REQUIRE(isValid);
+}
+
+TEST_CASE("Output image check", "[weight=5][timeout=8000]")
+{
+    Graph g = Graph("users_test_data.csv", "edges_test_data.csv");
+    Forcegraph f = Forcegraph();
+    f.setup(g, (double) (rand() % 5 + 1), (double) (rand() % 200), (double) (rand() % 100), 0.001, 1000, 1600, 900);
+    cs225::PNG check;
+
+    REQUIRE(check.readFromFile("FDG_out.png"));
 }
 
