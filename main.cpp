@@ -4,17 +4,6 @@
 #include "iostream"
 
 int main() {
-    // main
-        // constructs graph
-    // tests
-    // graph class  
-        // constructor: file name for data, file name for edges
-            // reads data and stores data
-            // private
-                // users
-                // adjency matrix (double values bc for pageRank)
-        // outputVisual()
-        // output most probable user()
 
     bool DEMO_PAGERANK_STATE_ = true;
     bool TEST_STATE = true;
