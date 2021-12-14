@@ -41,13 +41,13 @@ void Forcegraph::setup(Graph graph, double springconst, double springlen, double
     applyForces(graph, springconst, springlen, coulombconst, delta_time, max_i);
 
  
-    std::cout << "done setup" << std::endl;
+    std::cout << "Making output" << std::endl;
 
 
     node_graphics();
     createGraphic(graph);
 
-    std::cout << "done output" << std::endl;
+    std::cout << "done" << std::endl;
 
     return;
 }
@@ -339,6 +339,13 @@ void Forcegraph::createGraphic(Graph g) {
   png.writeToFile("FDG_out.png");
 }
 
+std::vector<std::pair<double, double>> Forcegraph::get_pos() {
+  return pos;
+}
+std::map<int, int> Forcegraph::get_data() {
+  return data;
+}
+
 
 
 /**
@@ -350,3 +357,4 @@ Algorithm:
   5. if not in equilibrium repeat
   6. print graph (will use circles for nodes and lines for edges)
 */
+
