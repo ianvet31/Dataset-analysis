@@ -20,26 +20,26 @@ int main() {
     bool TEST_STATE = true;
     
     if (DEMO_PAGERANK_STATE_) {
-        Graph g = Graph("large_twitch_features.csv", "large_twitch_edges.csv");
+        Graph g = Graph("users_test_data.csv", "edges_test_data.csv");
         Pagerank p = Pagerank();
-        p.powerPageRank(g, 10);
+        p.powerPageRank(g, 100);
     }
     if (TEST_STATE) {
 	std::cout << "Creating Graph..." << std::endl;
-        Graph g = Graph("users_test_data.csv", "edges_test_data.csv");
+        Graph g = Graph("medium_features.csv", "medium_edges.csv");
 
-        
-        
+        //p.printAMatrix(g, g.amatrix.size());
+        std::cout << "Setting up Page Rank..." << std::endl;
 
         Forcegraph f = Forcegraph();
 
         unsigned int w = 1600;
-        unsigned int h = 900;
+        unsigned int h = 1600;
 
         // FDG args: graph g, spring constant, spring rest length, coulomb constant, time step (delta T), max # of iterations, width and height of output
  	std::cout << "Setting up force-directed graph..." << std::endl;       
-        f.setup(g, 5, 100., 100., 0.001, 1000, w, h);  // FDG parameters are fairly sensitive, equilibrium can usually be achieved with small spring const (~10^-2) and large coulomb (~10^4)
-	std::cout<<"Find PNG in FDG_out.png"<<std::endl;
+        f.setup(g, 5.0, 100., 20000, 0.0001, 1000, w, h);  // FDG parameters are fairly sensitive, equilibrium can usually be achieved with small spring const (~10^-2) and large coulomb (~10^4)
+
     }
    
     
