@@ -27,7 +27,7 @@ In order to print the BFS and Adjacency matrix, add `g.test()` to `main.cpp` in 
 To control which algorithms are run, change the boolean vaues in `main.cpp`. To only run Page Rank, set TEST_STATE to false. To only run the Force-Directed graph, set DEMO_PAGERANK_STATE to false. Different `.csv` files can be used for the algorithms, but they can still run at the same time.
 
 #PAGERANK USAGE#
-        Graph g = Graph("{USERS DATA}.csv", "{EDGES DATA}.csv"); // modify {} appropriately
+        Graph g = Graph("{USERS DATA}.csv", "{EDGES DATA}.csv"); // modify {} appropriately \n
         Pagerank p = Pagerank(); // Sets up pagerank constructor
         p.powerPageRank(g, {num_iterations}); // replace {num_iterations} with the number of iterations, where default = 100
         The damping factor can be modified from within the pagerank.cpp file inside powerPageRank(Graph &graph, int iterations)
