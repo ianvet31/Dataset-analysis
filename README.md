@@ -30,13 +30,12 @@ To control which algorithms are run, change the boolean vaues in `main.cpp`. To 
         Graph g = Graph("{USERS DATA}.csv", "{EDGES DATA}.csv"); // modify {} appropriately
         Pagerank p = Pagerank(); // Sets up pagerank constructor
         p.powerPageRank(g, {num_iterations}); // replace {num_iterations} with the number of iterations, where default = 100
-        
         The damping factor can be modified from within the pagerank.cpp file inside powerPageRank(Graph &graph, int iterations)
         Modify line 5 - `damping(graph, {damping_factor})` // change {damping_factor} with damping_factor, where default = 0.85
-
         Results:
         The adjacency matrix for the graph is displayed in \currentamatrix.txt
         The pagerank leaderboard with sorted weights assigned to users is displayed in \pagerank_leaderboard.txt
+    
 
 ## Tests
 ***Pagerank Tests***
