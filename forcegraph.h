@@ -28,6 +28,9 @@ class Forcegraph {
 
     void createGraphic(Graph graph);
 
+    std::map<int, int> get_data();
+    std::vector<std::pair<double, double>> get_pos();
+
   private:
     
     cs225::PNG output_FDG;
@@ -43,10 +46,8 @@ class Forcegraph {
     
     std::vector<std::map<int, int>> vertices;
     std::vector<std::pair<int, int>> edges;
-
-    std::vector<std::pair<double, double>> pos;
+    std::vector<std::pair<double, double>> pos; 
     std::vector<std::pair<double, double>> forces;
-    std::vector<std::tuple<double, double, double>> colors;
 
 
 
@@ -57,4 +58,5 @@ class Forcegraph {
     void applyForces(Graph g, double springconst, double springlen, double coulombconst, double delta_time, int max_i_);
 
     bool equilibrium_check();
+
 };
