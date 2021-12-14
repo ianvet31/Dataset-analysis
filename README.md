@@ -14,7 +14,17 @@ For the less complicated parts of our project, such as the BFS traversal and cre
 
 As our algorithms became increasingly more complex and in need of edge testing, we implemented catch2. There are also seperate tests for both the Page Rank and the Force-Dierected graph algorithms.
 
-These tests can be compiled using 'make test' and run using ./test.
+These tests can be compiled using `make test` and run using `./test.`
+
+## Inputs and Outputs
+
+The inputs and outputs for our project are not controlled by the user on the command line. To change any inputs and outputs, the user must go into the files.
+
+In order to change the `.csv` files used for the project, open `main.cpp` and edit the Graph constructor. The first parameter hold the node data, and the second holds the edge data.
+
+In order to print the BFS and Adjacency matrix, add `g.test()` to `main.cpp` in the TEST_STATE section.
+
+To control which algorithms are run, change the boolean vaues in `main.cpp`. To only run Page Rank, set TEST_STATE to false. To only run the Force-Directed graph, set DEMO_PAGERANK_STATE to false. Different `.csv` files can be used for the algorithms, but they can still run at the same time.
 
 ## Execution Commands
 
