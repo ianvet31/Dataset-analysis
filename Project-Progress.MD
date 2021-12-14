@@ -56,3 +56,14 @@ Future Responsibilities
 
 Goals for next week:
 Finalize code by Friday so we can focus on the report and video by next weekend. Then we will have Monday as a buffer to submit everything by the deadline. 
+
+##12/13
+
+This week consisted of finalizing our project. 
+
+By the meeting on Saturday, all algorithms/traversals except for Page Rank were complete. 
+
+By Sunday, the Page Rank was completed. 
+
+Today, we filmed the video and finalized the report.
+ 
