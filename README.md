@@ -64,6 +64,11 @@ Multiple tests were created to test every aspect of every helper function used i
   - matrixMultiplication basic (tests smaller 2d matrix multiplied by 1d matrix)
   - matrixMultiplication advanced (tests larger 2d matrix multiplied by 1d matrix)
   - finalPagerankSum (must equal to 1)
+
+### Forcegraph Tests
+  - GraphCheck (confirms that the FDG algorithm doesn't alter any nodes or edges while iterating)
+  - PositionCheck (makes sure that all nodes' positions remain within the bounds of the PNG, i.e. no nodes or edges are lost in the output)
+  - OutputCheck (checks that the output png file is successfully created after running the setup function)
  
 ## Execution Commands
 
