@@ -53,7 +53,7 @@ The pagerank leaderboard with sorted weights assigned to users is outputted to p
   
 The forcegraph output can be fairly sensitive to its setup parameters. For the majority of our testing, we used a 1600x1600 square PNG canvas and found the best results with the following parameters: spring_constant = 5.0, spring_rest_length = 100.0, coulomb_constant = 20000.0, delta_t = 0.0001, max_iterations = 1000
  
-Running the setup function with full parameters will run the full algorithm and save the output PNG to the location "FDG_output.png"
+Running the setup function with full parameters will run the entire algorithm and save the output PNG to the location "FDG_output.png"
 
 ## Tests
 ### Pagerank Tests
