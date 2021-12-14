@@ -25,8 +25,6 @@ In order to change the `.csv` files used for the project, open `main.cpp` and ed
 In order to print the BFS and Adjacency matrix, add `g.test()` to `main.cpp` in the TEST_STATE section.
 
 To control which algorithms are run, change the boolean vaues in `main.cpp`. To only run Page Rank, set TEST_STATE to false. To only run the Force-Directed graph, set DEMO_PAGERANK_STATE to false. Different `.csv` files can be used for the algorithms, but they can still run at the same time.
-# Analyzing Twitch data through PageRank and Force-Directed Graphs
-
 
 ***PAGERANK USAGE***
         Graph g = Graph("{USERS DATA}.csv", "{EDGES DATA}.csv"); // modify {} appropriately
