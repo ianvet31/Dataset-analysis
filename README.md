@@ -1,3 +1,4 @@
+
 # Analyzing Twitch data through PageRank and Force-Directed Graphs
 
 ## Code Structure
@@ -26,19 +27,23 @@ In order to print the BFS and Adjacency matrix, add `g.test()` to `main.cpp` in 
 
 To control which algorithms are run, change the boolean vaues in `main.cpp`. To only run Page Rank, set TEST_STATE to false. To only run the Force-Directed graph, set DEMO_PAGERANK_STATE to false. Different `.csv` files can be used for the algorithms, but they can still run at the same time.
 
-#PAGERANK USAGE#
-        Graph g = Graph("{USERS DATA}.csv", "{EDGES DATA}.csv"); // modify {} appropriately 
-        Pagerank p = Pagerank(); // Sets up pagerank constructor
-        p.powerPageRank(g, {num_iterations}); // replace {num_iterations} with the number of iterations, where default = 100
-        The damping factor can be modified from within the pagerank.cpp file inside powerPageRank(Graph &graph, int iterations)
-        Modify line 5 - `damping(graph, {damping_factor})` // change {damping_factor} with damping_factor, where default = 0.85
-        Results:
-        The adjacency matrix for the graph is displayed in \currentamatrix.txt
-        The pagerank leaderboard with sorted weights assigned to users is displayed in \pagerank_leaderboard.txt
+### PAGERANK USAGE
+Modify the information between the brackets to use different data files. 
+`Graph g = Graph("{USERS_DATA}.csv", "{EDGES_DATA}.csv");`
+
+Modify the number of iterations by changing the default number iterations (100). 
+`p.powerPageRank(g, {num_iterations});`
+
+The damping factor (default .85) can be modified from within the pagerank.cpp file.
+`damping(graph, {damping_factor})`
+
+Results:
+The adjacency matrix for the graph is outputted to currentamatrix.txt
+The pagerank leaderboard with sorted weights assigned to users is outputted to pagerank_leaderboard.txt.
     
 
 ## Tests
-***Pagerank Tests***
+### Pagerank Tests
 Multiple tests were created to test every aspect of every helper function used in for the Pagerank algorithm.
   - validSquareMatrix (checks that rows == cols(rows for every row)
   - validMarkovMatrix (checks that the sum of columns is equal to 1)
