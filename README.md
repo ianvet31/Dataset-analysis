@@ -25,7 +25,31 @@ In order to change the `.csv` files used for the project, open `main.cpp` and ed
 In order to print the BFS and Adjacency matrix, add `g.test()` to `main.cpp` in the TEST_STATE section.
 
 To control which algorithms are run, change the boolean vaues in `main.cpp`. To only run Page Rank, set TEST_STATE to false. To only run the Force-Directed graph, set DEMO_PAGERANK_STATE to false. Different `.csv` files can be used for the algorithms, but they can still run at the same time.
+# Analyzing Twitch data through PageRank and Force-Directed Graphs
 
+
+***PAGERANK USAGE***
+        Graph g = Graph("{USERS DATA}.csv", "{EDGES DATA}.csv"); // modify {} appropriately
+        Pagerank p = Pagerank(); // Sets up pagerank constructor
+        p.powerPageRank(g, {num_iterations}); // replace {num_iterations} with the number of iterations, where default = 100
+        
+        // The damping factor can be modified from within the pagerank.cpp file inside powerPageRank(Graph &graph, int iterations)
+        Modify line 5 - `damping(graph, {damping_factor})` // change {damping_factor} with damping_factor, where default = 0.85
+
+    **Results**
+        The adjacency matrix for the graph is displayed in \currentamatrix.txt
+        The pagerank leaderboard with sorted weights assigned to users is displayed in \pagerank_leaderboard.txt
+
+## Tests
+***Pagerank Tests***
+Multiple tests were created to test every aspect of every helper function used in for the Pagerank algorithm.
+  - validSquareMatrix (checks that rows == cols(rows for every row)
+  - validMarkovMatrix (checks that the sum of columns is equal to 1)
+  - unitVectorGeneration (checks that the randomunitvector is a unit vector)
+  - matrixMultiplication basic (tests smaller 2d matrix multiplied by 1d matrix)
+  - matrixMultiplication advanced (tests larger 2d matrix multiplied by 1d matrix)
+  - finalPagerankSum (must equal to 1)
+ 
 ## Execution Commands
 
 In preparation to run project, use the command `make` to compile our project. 
